@@ -9,55 +9,40 @@ def study_places_view(data: fs.Datasy):
 
     appbar = create_appbar()
 
-    page_title = ft.Container(
-                    ft.Text("Room Booking", size=24, weight="bold", color=TUL_RED),
-                    alignment=ft.alignment.center
-                )
+    tabs_categories = ft.Tabs(
+        selected_index=0,
+        animation_duration=300,
+        height=30,
+        divider_color=ft.colors.GREY_300,
+        indicator_color=TUL_RED,
+        label_color=TUL_DARK_RED,
+        tabs=[
+            ft.Tab(tab_content=ft.Text('All', font_family="Trasandina", size=16)),
+            ft.Tab(tab_content=ft.Text('Group', font_family="Trasandina", size=16)),
+            ft.Tab(tab_content=ft.Text('Silent', font_family="Trasandina", size=16)),
+        ]
+    )
 
     search_field = ft.TextField(
-                    label="Search buildings",
-                    prefix_icon=ft.icons.SEARCH,
-                    border_color=TUL_RED)
-
-    categories_scroll = ft.Container(
-                        padding=10,
-                        content=ft.Row(
-                            scroll=ft.ScrollMode.AUTO,
-                            controls=[
-                                ft.Container(
-                                    padding=ft.padding.all(8),
-                                    bgcolor=TUL_RED,
-                                    border=ft.border.all(color=TUL_RED),
-                                    border_radius=8,
-                                    content=ft.Text(
-                                        cat,
-                                        color="white",
-                                        size=14
-                                    ),
-                                ) for cat in
-                                ["All", "Computer Labs", "Lecture Halls", "Study Rooms", "Conference Rooms"]
-                            ]
-                        )
-                    )
+        hint_text="Search for a place", 
+        hint_style=ft.TextStyle(font_family="Trasandina", size=18),
+        width=350, 
+        height=50,
+        border_color=ft.colors.GREY_300,
+        border_radius=ft.border_radius.all(10))
     
-    cards_container = ft.Column()
-
-    def create_card(place):
-        return ft.Card(
-            content=ft.Container(
-                content=ft.Column([
-                    ft.Image(src=place["image_url"], height=100, fit=ft.ImageFit.COVER),
-                    ft.Text(place["name"], size=16, weight=ft.FontWeight.BOLD),
-                    ft.Text(place["location"], size=12, color=ft.colors.GREY),
-                    ft.Text(f"Category: {place['category']}", size=12, color=ft.colors.GREY),
-                ]),
-                padding=10
-            ),
-            on_click=lambda e: data.page.snack_bar.open(f"You selected {place['name']}")
-        )
+    card = ft.Card(width=350,
+                   shape=ft.RoundedRectangleBorder(radius=10),
+                   content=ft.Container(border_radius=10,
+                                        clip_behavior=ft.ClipBehavior.ANTI_ALIAS,
+                                        content=
+                                        ft.Column([ft.Image(src="images/DSCF0265.JPG", fit=ft.ImageFit.COVER)])))
     
-
-    return ft.Container(
-            padding=10,
-            bgcolor="white",
-            content=appbar)
+    return ft.View(
+        route="/study_places", 
+        appbar=appbar,
+        padding=10,
+        bgcolor=ft.colors.WHITE, 
+        scroll=ft.ScrollMode.AUTO, 
+        controls=[search_field, tabs_categories, card],
+        horizontal_alignment="center")
