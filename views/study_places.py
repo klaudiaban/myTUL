@@ -1,12 +1,8 @@
 import flet as ft
-import flet_easy as fs
 from constants import *
 from .ui_helpers import create_appbar
 
-study_places = fs.AddPagesy()
-@study_places.page('/study_places', title='Study Places')
-def study_places_view(data: fs.Datasy):
-
+def study_places_view(page: ft.Page) -> ft.View:
     appbar = create_appbar()
 
     tabs_categories = ft.Tabs(
@@ -29,20 +25,35 @@ def study_places_view(data: fs.Datasy):
         width=350, 
         height=50,
         border_color=ft.colors.GREY_300,
-        border_radius=ft.border_radius.all(10))
-    
-    card = ft.Card(width=350,
-                   shape=ft.RoundedRectangleBorder(radius=10),
-                   content=ft.Container(border_radius=10,
-                                        clip_behavior=ft.ClipBehavior.ANTI_ALIAS,
-                                        content=
-                                        ft.Column([ft.Image(src="images/DSCF0265.JPG", fit=ft.ImageFit.COVER)])))
-    
+        border_radius=ft.border_radius.all(10)
+    )
+
+    card = ft.Card(
+        width=350,
+        shape=ft.RoundedRectangleBorder(radius=10),
+        content=ft.Container(
+            border_radius=10,
+            clip_behavior=ft.ClipBehavior.ANTI_ALIAS,
+            content=ft.Column([
+                ft.Image(src="images/DSCF0265.JPG", fit=ft.ImageFit.COVER),
+                ft.Row([ft.Text("Room 1", font_family="Trasandina")]),
+                ft.Row([ft.Text("Library", font_family="Trasandina")]),
+            ])
+        )
+    )
+
     return ft.View(
         route="/study_places", 
         appbar=appbar,
         padding=10,
         bgcolor=ft.colors.WHITE, 
         scroll=ft.ScrollMode.AUTO, 
-        controls=[search_field, tabs_categories, card],
-        horizontal_alignment="center")
+        controls=[
+            ft.Column([
+                search_field,
+                tabs_categories,
+                card
+            ], spacing=20, horizontal_alignment=ft.CrossAxisAlignment.CENTER)
+        ],
+        horizontal_alignment=ft.CrossAxisAlignment.CENTER
+    )

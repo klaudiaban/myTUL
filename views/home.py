@@ -1,24 +1,25 @@
 import flet as ft
-import flet_easy as fs
 from constants import *
 from .ui_helpers import create_appbar
 
-home = fs.AddPagesy(
-    route_prefix='/home'
-)
-@home.page('/init', title='Init')
-def home_view(data: fs.Datasy):
-
+def home_view(page: ft.Page) -> ft.View:
     # AppBar
     appbar = create_appbar()
+
+    # Navigation handler
+    def navigate(url):
+        def handler(e):
+            if url:
+                page.go(url)
+        return handler
 
     # Item list
     items = [
         ("About TUL", ft.icons.ACCOUNT_TREE, ""),
         ("Campus Map", ft.icons.MAP, ""),
-        ("Calendar", ft.icons.CALENDAR_MONTH, '/calen'),
+        ("Calendar", ft.icons.CALENDAR_MONTH, '/calendar'),
         ("News", ft.icons.NEWSPAPER, ""),
-        ("Wikamp", ft.icons.DASHBOARD, ""),
+        ("Wikamp", ft.icons.DASHBOARD, '/wikamp'),
         ("WebDziekanat", ft.icons.PAGES, ""),
         ("Study Places", ft.icons.BOOK, '/study_places'),
         ("Website", ft.icons.WEB, ""),
@@ -41,14 +42,11 @@ def home_view(data: fs.Datasy):
             border_radius=10,
             bgcolor=ft.colors.WHITE,
             alignment=ft.alignment.center,
-            on_click=data.go(url)
+            on_click=navigate(url)
         )
 
-    # Break items into rows of 3
+    # Compose UI
     rows = []
-
-    rows.append(appbar)
-
     for i in range(0, len(items), 3):
         row = ft.Row(
             controls=[create_card(*item) for item in items[i:i+3]],
@@ -56,4 +54,12 @@ def home_view(data: fs.Datasy):
         )
         rows.append(row)
 
-    return (ft.Column(rows, spacing=15))
+    return ft.View(
+        route="/home/init",
+        appbar=appbar,
+        controls=[
+            ft.Column(rows, spacing=15)
+        ],
+        vertical_alignment=ft.MainAxisAlignment.START,
+        horizontal_alignment=ft.CrossAxisAlignment.CENTER
+    )

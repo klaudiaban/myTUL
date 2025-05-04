@@ -1,5 +1,4 @@
 import flet as ft
-import flet_easy as fs
 from constants import *
 
 def create_appbar() -> ft.AppBar:
