@@ -28,18 +28,58 @@ def study_places_view(page: ft.Page) -> ft.View:
         border_radius=ft.border_radius.all(10)
     )
 
-    card = ft.Card(
-        width=350,
-        shape=ft.RoundedRectangleBorder(radius=10),
-        content=ft.Container(
-            border_radius=10,
-            clip_behavior=ft.ClipBehavior.ANTI_ALIAS,
-            content=ft.Column([
-                ft.Image(src="images/DSCF0265.JPG", fit=ft.ImageFit.COVER),
-                ft.Row([ft.Text("Room 1", font_family="Trasandina")]),
-                ft.Row([ft.Text("Library", font_family="Trasandina")]),
-            ])
+    def create_study_place_card(image_path, name, building, availability, on_more_info):
+        availability_color = ft.colors.GREEN if availability == "Available" else ft.colors.RED
+
+        return ft.Card(
+            width=350,
+            elevation=4,
+            shape=ft.RoundedRectangleBorder(radius=12),
+            content=ft.Container(
+                padding=10,
+                border_radius=12,
+                clip_behavior=ft.ClipBehavior.ANTI_ALIAS,
+                content=ft.Column([
+                    ft.Container(
+                        content=ft.Image(src=image_path, height=180, width=350, fit=ft.ImageFit.COVER),
+                        border_radius=12,
+                        clip_behavior=ft.ClipBehavior.ANTI_ALIAS,
+                    ),
+                    ft.Row(
+                        height=30,
+                        alignment=ft.MainAxisAlignment.SPACE_BETWEEN,
+                        controls=[
+                            ft.Text(name, size=20, weight=ft.FontWeight.BOLD),
+                        ]
+                    ),
+                    ft.Text(building, size=16, color=ft.colors.GREY),
+                    ft.Row(
+                        height=30,
+                        alignment=ft.MainAxisAlignment.SPACE_BETWEEN,
+                        controls=[
+                            ft.Text(
+                                availability,
+                                size=14,
+                                color=availability_color,
+                                weight=ft.FontWeight.BOLD
+                            ),
+                            ft.ElevatedButton(
+                                text="More Info",
+                                on_click=on_more_info,
+                                style=ft.ButtonStyle(shape=ft.RoundedRectangleBorder(radius=8))
+                            )
+                        ]
+                    )
+                ])
+            )
         )
+    
+    card = create_study_place_card(
+        "images/parter_4.JPG",
+        "Roomy 1",
+        "Library",
+        "Available",
+        lambda e: page.go("/study_place_details")
     )
 
     return ft.View(

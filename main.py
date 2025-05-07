@@ -8,9 +8,9 @@ from constants import gradient_background
 def main(page: ft.Page):
 
     # Page configuration
-    page.window_width = 390
-    page.window_height = 844
-    page.window_resizable = False
+    page.window.width = 390
+    page.window.height = 844
+    page.window.resizable = False
     page.horizontal_alignment = 'center'
     page.vertical_alignment = ft.MainAxisAlignment.START
     page.padding = 20
