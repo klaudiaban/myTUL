@@ -164,11 +164,14 @@ stats_data = {
 
 
 def insert_data(table, header, data):
-    table.child(header).set(data)
+    room = get_room(table)
+    room.child(header).set(data)
 
 def set_realtime_data():
     current.set(current_data)
 
-def update_stats():
+def update_stats(stats_data):
     stats.set(stats_data)
 
+def get_room(room):
+    return rooms[room]
