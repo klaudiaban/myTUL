@@ -19,7 +19,8 @@ timestamp = datetime.now().strftime('%Y-%m-%d_%H-%M-%S')
 safe_key = str(timestamp)
 data = {"place": "Biblioteka", "amount": random.randint(0, 15)}
 rooms ={
-    "Biblioteka": db.reference('/AdminData/AllTime/Biblioteka')
+    "Biblioteka": db.reference('/AdminData/AllTime/Biblioteka'),
+    "Lodex": db.reference('/AdminData/AllTime/Lodex')
 }
 
 # realtime data update
@@ -38,18 +39,22 @@ current_data = {
 
 #once a day average calculated data
 stats_data = {
-    "Monday":
+    "Biblioteka":
         {
-            "7":
-                {
-                    "amount": 1,
-                },
-            "8":
-                {
-                    "amount": 3,
-                },
+        "Monday":
+            {
+                "7":
+                    {
+                        "amount": 1,
+                    },
+                "8":
+                    {
+                        "amount": 3,
+                    },
+            }
         }
-}
+    }
+
 
 def insert_data(table, header, data):
     table.child(header).set(data)
