@@ -3,30 +3,26 @@ from constants import *
 from .ui_helpers import create_appbar
 
 def study_places_view(page: ft.Page) -> ft.View:
-    appbar = create_appbar()
-
-    tabs_categories = ft.Tabs(
-        selected_index=0,
-        animation_duration=300,
-        height=30,
-        divider_color=ft.colors.GREY_300,
-        indicator_color=TUL_RED,
-        label_color=TUL_DARK_RED,
-        tabs=[
-            ft.Tab(tab_content=ft.Text('All', font_family="Trasandina", size=16)),
-            ft.Tab(tab_content=ft.Text('Group', font_family="Trasandina", size=16)),
-            ft.Tab(tab_content=ft.Text('Silent', font_family="Trasandina", size=16)),
-        ]
-    )
-
-    search_field = ft.TextField(
-        hint_text="Search for a place", 
-        hint_style=ft.TextStyle(font_family="Trasandina", size=18),
-        width=350, 
-        height=50,
-        border_color=ft.colors.GREY_300,
-        border_radius=ft.border_radius.all(10)
-    )
+    room_data = [
+        {
+            "name": "Ground Floor of Library",
+            "campus": "B",
+            "building": "Library",
+            "floor": 0,
+            "image": "images/parter_4.JPG",
+            "latitude": 51.123456,
+            "longitude": 17.123456,
+        },
+        {
+            "name": "Second Floor of Library",
+            "campus": "A",
+            "building": "Library",
+            "floor": 2,
+            "image": "images/drugie_2.JPG",
+            "latitude": 51.123456,
+            "longitude": 17.123456,
+        },
+    ]
 
     def create_study_place_card(image_path, name, building, availability, on_more_info):
         availability_color = ft.colors.GREEN if availability == "Available" else ft.colors.RED
@@ -73,14 +69,59 @@ def study_places_view(page: ft.Page) -> ft.View:
                 ])
             )
         )
-    
-    card = create_study_place_card(
-        "images/parter_4.JPG",
-        "Roomy 1",
-        "Library",
-        "Available",
-        lambda e: page.go("/study_place_details")
+
+    appbar = create_appbar()
+
+    a_cards = []
+    b_cards = []
+    for room in room_data:
+        if room["campus"] == "A":
+            a_cards.append(
+                create_study_place_card(
+                    room["image"],
+                    room["name"],
+                    room["building"],
+                    "Available",
+                    lambda e: page.go("/study_place_details")
+                )
+            )
+        elif room["campus"] == "B":
+            b_cards.append(
+                create_study_place_card(
+                    room["image"],
+                    room["name"],
+                    room["building"],
+                    "Available",
+                    lambda e: page.go("/study_place_details")
+                )
+            )
+
+    all_cards = a_cards + b_cards
+
+    tabs_categories = ft.Tabs(
+        selected_index=0,
+        animation_duration=300,
+        divider_color=ft.colors.GREY_300,
+        indicator_color=TUL_RED,
+        label_color=TUL_DARK_RED,
+        tabs=[
+            ft.Tab(tab_content=ft.Text('All', font_family="Trasandina", size=16), content=ft.Column(controls=all_cards)),
+            ft.Tab(tab_content=ft.Text('Campus A', font_family="Trasandina", size=16), content=ft.Column(controls=a_cards)),
+            ft.Tab(tab_content=ft.Text('Campus B', font_family="Trasandina", size=16), content=ft.Column(controls=b_cards)),
+        ]
     )
+
+
+    search_field = ft.TextField(
+        hint_text="Search for a place", 
+        hint_style=ft.TextStyle(font_family="Trasandina", size=18),
+        width=350, 
+        height=50,
+        border_color=ft.colors.GREY_300,
+        border_radius=ft.border_radius.all(10)
+    )
+
+
 
     return ft.View(
         route="/study_places", 
@@ -91,8 +132,7 @@ def study_places_view(page: ft.Page) -> ft.View:
         controls=[
             ft.Column([
                 search_field,
-                tabs_categories,
-                card
+                tabs_categories
             ], spacing=20, horizontal_alignment=ft.CrossAxisAlignment.CENTER)
         ],
         horizontal_alignment=ft.CrossAxisAlignment.CENTER
