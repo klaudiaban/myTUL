@@ -3,7 +3,9 @@ from views.home import home_view
 from views.calendar import calen_view
 from views.study_places import study_places_view
 from views.wikamp import wikamp_view
+from views.location import location_view
 from constants import gradient_background
+
 
 def main(page: ft.Page):
 
@@ -34,6 +36,8 @@ def main(page: ft.Page):
             page.views.append(study_places_view(page))
         elif page.route == "/wikamp":
             page.views.append(wikamp_view(page))
+        elif page.route == "/location":
+            page.views.append(location_view(page))
         else:
             page.views.append(ft.View("/", [ft.Text("404 - Page not found")]))
 
