@@ -29,8 +29,8 @@ def study_places_view(page: ft.Page) -> ft.View:
 
         return ft.Card(
             width=350,
-            elevation=4,
             shape=ft.RoundedRectangleBorder(radius=12),
+            shadow_color=ft.colors.GREY_100,
             content=ft.Container(
                 padding=10,
                 border_radius=12,
@@ -70,7 +70,7 @@ def study_places_view(page: ft.Page) -> ft.View:
             )
         )
 
-    appbar = create_appbar()
+    appbar = create_appbar(route_back="/home/init", home=False)
 
     a_cards = []
     b_cards = []
@@ -99,17 +99,35 @@ def study_places_view(page: ft.Page) -> ft.View:
     all_cards = a_cards + b_cards
 
     tabs_categories = ft.Tabs(
-        selected_index=0,
-        animation_duration=300,
-        divider_color=ft.colors.GREY_300,
-        indicator_color=TUL_RED,
-        label_color=TUL_DARK_RED,
-        tabs=[
-            ft.Tab(tab_content=ft.Text('All', font_family="Trasandina", size=16), content=ft.Column(controls=all_cards)),
-            ft.Tab(tab_content=ft.Text('Campus A', font_family="Trasandina", size=16), content=ft.Column(controls=a_cards)),
-            ft.Tab(tab_content=ft.Text('Campus B', font_family="Trasandina", size=16), content=ft.Column(controls=b_cards)),
-        ]
-    )
+                            selected_index=0,
+                            animation_duration=300,
+                            divider_color=ft.colors.GREY_300,
+                            indicator_color=TUL_RED,
+                            label_color=TUL_DARK_RED,
+                            tabs=[
+                                ft.Tab(
+                                    tab_content=ft.Text('All', font_family="Trasandina", size=16),
+                                    content=ft.Container(
+                                        padding=ft.Padding(0, 10, 0, 0),  # Top padding of 16
+                                        content=ft.Column(controls=all_cards)
+                                    )
+                                ),
+                                ft.Tab(
+                                    tab_content=ft.Text('Campus A', font_family="Trasandina", size=16),
+                                    content=ft.Container(
+                                        padding=ft.Padding(0, 10, 0, 0),
+                                        content=ft.Column(controls=a_cards)
+                                    )
+                                ),
+                                ft.Tab(
+                                    tab_content=ft.Text('Campus B', font_family="Trasandina", size=16),
+                                    content=ft.Container(
+                                        padding=ft.Padding(0, 10, 0, 0),
+                                        content=ft.Column(controls=b_cards)
+                                    )
+                                ),
+                            ]
+                        )
 
 
     search_field = ft.TextField(
@@ -120,8 +138,6 @@ def study_places_view(page: ft.Page) -> ft.View:
         border_color=ft.colors.GREY_300,
         border_radius=ft.border_radius.all(10)
     )
-
-
 
     return ft.View(
         route="/study_places", 

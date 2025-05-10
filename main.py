@@ -42,7 +42,7 @@ def main(page: ft.Page):
             page.views.append(ft.View("/", [ft.Text("404 - Page not found")]))
 
         page.update()
-
+    
     page.on_route_change = route_change
     page.go("/home/init")
 
