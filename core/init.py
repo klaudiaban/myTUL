@@ -4,6 +4,7 @@ from views.calendar import calen_view
 from views.study_places import study_places_view
 from views.wikamp import wikamp_view
 from views.location import location_view
+from views.open import open_view
 
 def initialize_page(page: ft.Page):
     
@@ -25,7 +26,9 @@ def initialize_page(page: ft.Page):
     def route_change(e):
         page.views.clear()
 
-        if page.route == "/home/init":
+        if page.route == "/open":
+            page.views.append(open_view(page))
+        elif page.route == "/home":
             page.views.append(home_view(page))
         elif page.route == "/calendar":
             page.views.append(calen_view(page))
@@ -41,4 +44,4 @@ def initialize_page(page: ft.Page):
         page.update()
     
     page.on_route_change = route_change
-    page.go("/home/init")
+    page.go("/open")
