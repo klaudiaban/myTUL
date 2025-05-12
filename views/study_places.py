@@ -70,7 +70,7 @@ def study_places_view(page: ft.Page) -> ft.View:
             )
         )
 
-    appbar = create_appbar(route_back="/home/init", home=False)
+    appbar = create_appbar(route_back="/home", home=False)
 
     a_cards = []
     b_cards = []
@@ -98,38 +98,6 @@ def study_places_view(page: ft.Page) -> ft.View:
 
     all_cards = a_cards + b_cards
 
-    tabs_categories = ft.Tabs(
-                            selected_index=0,
-                            animation_duration=300,
-                            divider_color=ft.colors.GREY_300,
-                            indicator_color=TUL_RED,
-                            label_color=TUL_DARK_RED,
-                            tabs=[
-                                ft.Tab(
-                                    tab_content=ft.Text('All', font_family="Trasandina", size=16),
-                                    content=ft.Container(
-                                        padding=ft.Padding(0, 10, 0, 0),  # Top padding of 16
-                                        content=ft.Column(controls=all_cards)
-                                    )
-                                ),
-                                ft.Tab(
-                                    tab_content=ft.Text('Campus A', font_family="Trasandina", size=16),
-                                    content=ft.Container(
-                                        padding=ft.Padding(0, 10, 0, 0),
-                                        content=ft.Column(controls=a_cards)
-                                    )
-                                ),
-                                ft.Tab(
-                                    tab_content=ft.Text('Campus B', font_family="Trasandina", size=16),
-                                    content=ft.Container(
-                                        padding=ft.Padding(0, 10, 0, 0),
-                                        content=ft.Column(controls=b_cards)
-                                    )
-                                ),
-                            ]
-                        )
-
-
     search_field = ft.TextField(
         hint_text="Search for a place", 
         hint_style=ft.TextStyle(font_family="Trasandina", size=18),
@@ -138,6 +106,35 @@ def study_places_view(page: ft.Page) -> ft.View:
         border_color=ft.colors.GREY_300,
         border_radius=ft.border_radius.all(10)
     )
+
+    selected_cards = []
+    
+    def amenity_selected(e, selected_amenity):
+        # Update the bgcolor for each chip to reflect selection
+        for chip in amenity_chips:
+            if selected_amenity == "Campus A":
+                selected_cards = a_cards
+            elif selected_amenity == "Campus B":
+                selected_cards = b_cards
+            else:
+                selected_cards = all_cards
+        
+        page.update()
+
+    amenities = ["Campus A", "Campus B"]
+    amenity_chips = []
+
+    for amenity in amenities:
+        amenity_chips.append(
+            ft.Chip(
+                border_side=ft.BorderSide(color=ft.colors.GREY_300, width=1),
+                check_color=TUL_RED,
+                label=ft.Text(amenity, font_family="Trasandina", size=16, color=TUL_DARK_RED),
+                bgcolor=ft.Colors.WHITE,
+                autofocus=True,
+                on_select=lambda e, amenity=amenity: amenity_selected(e, amenity),
+            )
+        )
 
     return ft.View(
         route="/study_places", 
@@ -148,7 +145,9 @@ def study_places_view(page: ft.Page) -> ft.View:
         controls=[
             ft.Column([
                 search_field,
-                tabs_categories
+                ft.Row(scroll=ft.ScrollMode.HIDDEN, controls=amenity_chips),
+                ft.Container(
+                    content=ft.Column(controls=all_cards))
             ], spacing=20, horizontal_alignment=ft.CrossAxisAlignment.CENTER)
         ],
         horizontal_alignment=ft.CrossAxisAlignment.CENTER
