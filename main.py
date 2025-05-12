@@ -6,3 +6,6 @@ def main(page: ft.Page):
 
 if __name__ == "__main__":
     ft.app(target=main, assets_dir="assets")
+
+
+#pozdrawiam z Kołobrzega!!!@#!!@@ buziaczki od rafała
