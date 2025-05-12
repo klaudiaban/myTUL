@@ -1,7 +1,6 @@
 import threading
 import time
 import database_admin as da
-import calculate
 from datetime import datetime
 
 # array for cameras/streams
@@ -19,15 +18,15 @@ def worker(task_name):
         timestamp_data = 0 #this is the data like amount itp.
         date = 0 #this is the date that will be used as a header for the data insert(name of the dict in json)
         room = 0 #this is the name of the room, that will help to add data to the right table
-        da.set_realtime_data(room, date, current_data)
+        da.set_realtime_data(current_data)
+        da.insert_into_database(room, timestamp_data, date)
         print("[Worker: "+ task_name +"] realtime data updated")
-        da.insert_data(timestamp_data)
         print("[Worker: " + task_name + "] inserted data")
 
 # Server thread function, this will run and calculate the statistics and insert them to the database/UserData/Stats
 def server():
     while running:
-        stats = calculate.calculate_stats() #calculates the stats, from the all time data
+        stats = da.calculate_stats() #calculates the stats, from the all time data
         da.update_stats(stats) #updates the stats in the database
         print("[Server] Stats updated! Current date:" + datetime.now().strftime('%Y-%m-%d_%H-%M-%S'))
         time.sleep(86400) # does the above only every 24h
