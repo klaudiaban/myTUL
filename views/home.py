@@ -55,7 +55,7 @@ def home_view(page: ft.Page) -> ft.View:
         rows.append(row)
 
     return ft.View(
-        route="/home/init",
+        route="/home",
         appbar=appbar,
         controls=[
             ft.Column(rows, spacing=15)
