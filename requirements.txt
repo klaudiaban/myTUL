@@ -1,0 +1,2 @@
+flet==0.27.6
+flet_webview==0.1.0
