@@ -1,31 +1,33 @@
 import flet as ft
+import pandas as pd
 from constants import *
 from .ui_helpers import create_appbar
 
 def study_places_view(page: ft.Page) -> ft.View:
-    room_data = [
-        {
-            "name": "Ground Floor of Library",
-            "campus": "B",
-            "building": "Library",
-            "floor": 0,
-            "image": "images/parter_4.JPG",
-            "latitude": 51.123456,
-            "longitude": 17.123456,
-        },
-        {
-            "name": "Second Floor of Library",
-            "campus": "A",
-            "building": "Library",
-            "floor": 2,
-            "image": "images/drugie_2.JPG",
-            "latitude": 51.123456,
-            "longitude": 17.123456,
-        },
+    df = pd.read_csv("TULapp/assets/info/study_places_table.csv")
+    df = df.dropna(subset=["Name of the place", "Campus", "Building", "Name of image file"])
+
+    FACILITY_COLUMNS = [
+        "Group", "Individual", "Cafeteria", "Power Outlets",
+        "Whiteboards", "Computers", "Comfortable chairs/Poufs/Couches"
     ]
 
-    def create_study_place_card(image_path, name, building, availability, on_more_info):
+    def create_study_place_card(image_path, name, building, facilities, on_more_info=lambda e: page.go("/study_place_details"), availability="Available"):
         availability_color = ft.colors.GREEN if availability == "Available" else ft.colors.RED
+
+        # Create facility chips
+        facility_chips = []
+        for facility in facilities:
+            facility_chips.append(
+                ft.Chip(
+                    label=ft.Text(facility, size=12),
+                    bgcolor=ft.colors.BLUE_50,
+                    border_side=ft.BorderSide(color=ft.colors.BLUE_200, width=1)
+                )
+            )
+
+        if "HEIC" in image_path:
+            image_path = image_path.replace("HEIC", "jpg")
 
         return ft.Card(
             width=350,
@@ -37,7 +39,7 @@ def study_places_view(page: ft.Page) -> ft.View:
                 clip_behavior=ft.ClipBehavior.ANTI_ALIAS,
                 content=ft.Column([
                     ft.Container(
-                        content=ft.Image(src=image_path, height=180, width=350, fit=ft.ImageFit.COVER),
+                        content=ft.Image(src=f"TULapp/assets/study_places_images/{image_path}", height=180, width=350, fit=ft.ImageFit.COVER),
                         border_radius=12,
                         clip_behavior=ft.ClipBehavior.ANTI_ALIAS,
                     ),
@@ -49,6 +51,15 @@ def study_places_view(page: ft.Page) -> ft.View:
                         ]
                     ),
                     ft.Text(building, size=16, color=ft.colors.GREY),
+                    ft.Container(
+                        content=ft.Row(
+                            controls=facility_chips,
+                            wrap=True,
+                            spacing=5,
+                            run_spacing=5
+                        ),
+                        padding=ft.padding.symmetric(vertical=5)
+                    ),
                     ft.Row(
                         height=30,
                         alignment=ft.MainAxisAlignment.SPACE_BETWEEN,
@@ -72,32 +83,64 @@ def study_places_view(page: ft.Page) -> ft.View:
 
     appbar = create_appbar(route_back="/home", home=False)
 
-    a_cards = []
-    b_cards = []
-    for room in room_data:
-        if room["campus"] == "A":
-            a_cards.append(
-                create_study_place_card(
-                    room["image"],
-                    room["name"],
-                    room["building"],
-                    "Available",
-                    lambda e: page.go("/study_place_details")
-                )
+    def check_facilities(row):
+        facilities = []
+        
+        # Campus check - fix for A30/B30 format
+        campus_val = str(row.get("Campus", "")).strip()
+        if campus_val.startswith("A"):
+            facilities.append("Campus A")
+        elif campus_val.startswith("B"):
+            facilities.append("Campus B")
+        
+        # Facility checks - handle floats and NaN
+        for facility_col in FACILITY_COLUMNS:
+            if facility_col in row:
+                val = row[facility_col]
+                # Handle NaN and numeric values
+                if pd.notna(val) and float(val) == 1.0:
+                    facilities.append(facility_col)
+                    
+        return facilities
+    
+    # Store place data for filtering
+    places_data = []
+    for _, row in df.iterrows():
+        facilities = check_facilities(row)
+        place_data = {
+            'image_path': row["Name of image file"],
+            'name': row["Name of the place"],
+            'building': row["Building"],
+            'facilities': facilities
+        }
+        places_data.append(place_data)
+    
+    # Create initial cards
+    def create_cards_from_data(data_list):
+        cards = []
+        for place in data_list:
+            card = create_study_place_card(
+                place['image_path'],
+                place['name'],
+                place['building'],
+                place['facilities'],
+                lambda e: page.go("/study_place_details")
             )
-        elif room["campus"] == "B":
-            b_cards.append(
-                create_study_place_card(
-                    room["image"],
-                    room["name"],
-                    room["building"],
-                    "Available",
-                    lambda e: page.go("/study_place_details")
-                )
-            )
+            cards.append(card)
+        return cards
+    
+    def filter_places_by_amenities(selected_amenities):
+        if "All" in selected_amenities:
+            return places_data
+        
+        filtered_places = []
+        for place in places_data:
+            # Check if place has any of the selected amenities
+            if any(amenity in place['facilities'] for amenity in selected_amenities):
+                filtered_places.append(place)
 
-    all_cards = a_cards + b_cards
-
+        return filtered_places
+    
     search_field = ft.TextField(
         hint_text="Search for a place", 
         hint_style=ft.TextStyle(font_family="Trasandina", size=18),
@@ -107,34 +150,69 @@ def study_places_view(page: ft.Page) -> ft.View:
         border_radius=ft.border_radius.all(10)
     )
 
-    selected_cards = []
+    amenities = ["All", "Campus A", "Campus B"] + FACILITY_COLUMNS
+    amenity_chips = []
+    selected_amenities = set(["All"])
     
-    def amenity_selected(e, selected_amenity):
-        # Update the bgcolor for each chip to reflect selection
-        for chip in amenity_chips:
-            if selected_amenity == "Campus A":
-                selected_cards = a_cards
-            elif selected_amenity == "Campus B":
-                selected_cards = b_cards
-            else:
-                selected_cards = all_cards
+    # Create content column
+    content_column = ft.Column(controls=create_cards_from_data(places_data))
+
+    def amenity_selected(e, amenity):
+        nonlocal selected_amenities
         
+        if amenity == "All":
+            if e.control.selected:
+                # "All" is being selected - clear all others and select only "All"
+                selected_amenities = set(["All"])
+                for chip in amenity_chips:
+                    chip.selected = (chip.label.value == "All")
+            else:
+                # "All" is being unselected - check if it's the only one selected
+                if len(selected_amenities) == 1 and "All" in selected_amenities:
+                    # Prevent unselecting "All" when it's the only option - force it back to selected
+                    e.control.selected = True
+                    page.update()
+                    return
+                else:
+                    # Allow unselecting "All" if other amenities are selected
+                    selected_amenities.discard("All")
+        else:
+            # Handle non-"All" amenity selection
+            if "All" in selected_amenities:
+                selected_amenities.remove("All")
+                # Update "All" chip to unselected
+                for chip in amenity_chips:
+                    if chip.label.value == "All":
+                        chip.selected = False
+                        break
+            
+            if e.control.selected:
+                selected_amenities.add(amenity)
+            else:
+                selected_amenities.discard(amenity)
+        
+        # If no amenities selected after all operations, default back to "All"
+        if not selected_amenities:
+            selected_amenities = set(["All"])
+            for chip in amenity_chips:
+                chip.selected = (chip.label.value == "All")
+        
+        # Filter and update
+        filtered_places = filter_places_by_amenities(selected_amenities)
+        content_column.controls = create_cards_from_data(filtered_places)
         page.update()
 
-    amenities = ["Campus A", "Campus B"]
-    amenity_chips = []
-
+    # Create amenity chips
     for amenity in amenities:
-        amenity_chips.append(
-            ft.Chip(
-                border_side=ft.BorderSide(color=ft.colors.GREY_300, width=1),
-                check_color=TUL_RED,
-                label=ft.Text(amenity, font_family="Trasandina", size=16, color=TUL_DARK_RED),
-                bgcolor=ft.Colors.WHITE,
-                autofocus=True,
-                on_select=lambda e, amenity=amenity: amenity_selected(e, amenity),
-            )
+        chip = ft.Chip(
+            border_side=ft.BorderSide(color=ft.colors.GREY_300, width=1),
+            check_color=TUL_RED,
+            label=ft.Text(amenity, font_family="Trasandina", size=16, color=TUL_DARK_RED),
+            bgcolor=ft.Colors.WHITE,
+            on_select=lambda e, amenity=amenity: amenity_selected(e, amenity),
+            selected=(amenity == "All")
         )
+        amenity_chips.append(chip)
 
     return ft.View(
         route="/study_places", 
@@ -146,8 +224,7 @@ def study_places_view(page: ft.Page) -> ft.View:
             ft.Column([
                 search_field,
                 ft.Row(scroll=ft.ScrollMode.HIDDEN, controls=amenity_chips),
-                ft.Container(
-                    content=ft.Column(controls=all_cards))
+                ft.Container(content=content_column)
             ], spacing=20, horizontal_alignment=ft.CrossAxisAlignment.CENTER)
         ],
         horizontal_alignment=ft.CrossAxisAlignment.CENTER
