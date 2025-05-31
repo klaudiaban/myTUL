@@ -4,7 +4,7 @@ from constants import *
 from .ui_helpers import create_appbar
 
 def study_places_view(page: ft.Page) -> ft.View:
-    df = pd.read_csv("TULapp/assets/info/study_places_table.csv")
+    df = pd.read_csv("assets/info/study_places_table.csv")
     df = df.dropna(subset=["Name of the place", "Campus", "Building", "Name of image file"])
 
     FACILITY_COLUMNS = [
@@ -39,7 +39,7 @@ def study_places_view(page: ft.Page) -> ft.View:
                 clip_behavior=ft.ClipBehavior.ANTI_ALIAS,
                 content=ft.Column([
                     ft.Container(
-                        content=ft.Image(src=f"TULapp/assets/study_places_images/{image_path}", height=180, width=350, fit=ft.ImageFit.COVER),
+                        content=ft.Image(src=f"assets/study_places_images/{image_path}", height=180, width=350, fit=ft.ImageFit.COVER),
                         border_radius=12,
                         clip_behavior=ft.ClipBehavior.ANTI_ALIAS,
                     ),
