@@ -29,7 +29,7 @@ def calen_view(page: Page) -> View:
 
     return View(
         route="/calendar",
-        appbar=create_appbar(),
+        appbar=create_appbar(page, route_back="/home", home=False),
         controls=[
             Column(
                 controls=[heading, placeholder],

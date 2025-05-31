@@ -4,7 +4,7 @@ from .ui_helpers import create_appbar
 
 def home_view(page: ft.Page) -> ft.View:
     # AppBar
-    appbar = create_appbar()
+    appbar = create_appbar(page, home=True)
 
     # Navigation handler
     def navigate(url):

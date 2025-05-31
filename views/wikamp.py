@@ -5,7 +5,7 @@ from constants import *
 from .ui_helpers import create_appbar
 
 def wikamp_view(page: ft.Page) -> ft.View:
-    appbar = create_appbar()
+    appbar = create_appbar(page, route_back="/home", home=False)
 
     webbrowser.open("https://edu.p.lodz.pl/")
     fallback_message = ft.Text(

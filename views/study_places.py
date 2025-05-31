@@ -81,7 +81,7 @@ def study_places_view(page: ft.Page) -> ft.View:
             )
         )
 
-    appbar = create_appbar(route_back="/home", home=False)
+    appbar = create_appbar(page, route_back="/home", home=False)
 
     def check_facilities(row):
         facilities = []
