@@ -86,24 +86,20 @@ def study_places_view(page: ft.Page) -> ft.View:
     def check_facilities(row):
         facilities = []
         
-        # Campus check - fix for A30/B30 format
         campus_val = str(row.get("Campus", "")).strip()
         if campus_val.startswith("A"):
             facilities.append("Campus A")
         elif campus_val.startswith("B"):
             facilities.append("Campus B")
         
-        # Facility checks - handle floats and NaN
         for facility_col in FACILITY_COLUMNS:
             if facility_col in row:
                 val = row[facility_col]
-                # Handle NaN and numeric values
                 if pd.notna(val) and float(val) == 1.0:
                     facilities.append(facility_col)
                     
         return facilities
-    
-    # Store place data for filtering
+
     places_data = []
     for _, row in df.iterrows():
         facilities = check_facilities(row)
@@ -114,8 +110,7 @@ def study_places_view(page: ft.Page) -> ft.View:
             'facilities': facilities
         }
         places_data.append(place_data)
-    
-    # Create initial cards
+
     def create_cards_from_data(data_list):
         cards = []
         for place in data_list:
@@ -128,59 +123,51 @@ def study_places_view(page: ft.Page) -> ft.View:
             )
             cards.append(card)
         return cards
-    
-    def filter_places_by_amenities(selected_amenities):
-        if "All" in selected_amenities:
-            return places_data
-        
-        filtered_places = []
+
+    def filter_places_by_search_and_amenities(search_text, selected_amenities):
+        search_text = search_text.lower().strip()
+        filtered = []
+
         for place in places_data:
-            # Check if place has any of the selected amenities
-            if any(amenity in place['facilities'] for amenity in selected_amenities):
-                filtered_places.append(place)
+            matches_amenity = "All" in selected_amenities or any(
+                amenity in place['facilities'] for amenity in selected_amenities
+            )
+            matches_search = search_text in place['name'].lower()
+            
+            if matches_amenity and matches_search:
+                filtered.append(place)
 
-        return filtered_places
-    
-    search_field = ft.TextField(
-        hint_text="Search for a place", 
-        hint_style=ft.TextStyle(font_family="Trasandina", size=18),
-        width=350, 
-        height=50,
-        border_color=ft.colors.GREY_300,
-        border_radius=ft.border_radius.all(10)
-    )
+        return filtered
 
+    selected_amenities = set(["All"])
     amenities = ["All", "Campus A", "Campus B"] + FACILITY_COLUMNS
     amenity_chips = []
-    selected_amenities = set(["All"])
-    
-    # Create content column
+
     content_column = ft.Column(controls=create_cards_from_data(places_data))
+
+    def update_content_based_on_filters(current_search_text):
+        filtered_places = filter_places_by_search_and_amenities(current_search_text, selected_amenities)
+        content_column.controls = create_cards_from_data(filtered_places)
+        page.update()
 
     def amenity_selected(e, amenity):
         nonlocal selected_amenities
         
         if amenity == "All":
             if e.control.selected:
-                # "All" is being selected - clear all others and select only "All"
                 selected_amenities = set(["All"])
                 for chip in amenity_chips:
                     chip.selected = (chip.label.value == "All")
             else:
-                # "All" is being unselected - check if it's the only one selected
                 if len(selected_amenities) == 1 and "All" in selected_amenities:
-                    # Prevent unselecting "All" when it's the only option - force it back to selected
                     e.control.selected = True
                     page.update()
                     return
                 else:
-                    # Allow unselecting "All" if other amenities are selected
                     selected_amenities.discard("All")
         else:
-            # Handle non-"All" amenity selection
             if "All" in selected_amenities:
                 selected_amenities.remove("All")
-                # Update "All" chip to unselected
                 for chip in amenity_chips:
                     if chip.label.value == "All":
                         chip.selected = False
@@ -191,18 +178,13 @@ def study_places_view(page: ft.Page) -> ft.View:
             else:
                 selected_amenities.discard(amenity)
         
-        # If no amenities selected after all operations, default back to "All"
         if not selected_amenities:
             selected_amenities = set(["All"])
             for chip in amenity_chips:
                 chip.selected = (chip.label.value == "All")
-        
-        # Filter and update
-        filtered_places = filter_places_by_amenities(selected_amenities)
-        content_column.controls = create_cards_from_data(filtered_places)
-        page.update()
 
-    # Create amenity chips
+        update_content_based_on_filters(search_field.value)
+
     for amenity in amenities:
         chip = ft.Chip(
             border_side=ft.BorderSide(color=ft.colors.GREY_300, width=1),
@@ -213,6 +195,16 @@ def study_places_view(page: ft.Page) -> ft.View:
             selected=(amenity == "All")
         )
         amenity_chips.append(chip)
+
+    search_field = ft.TextField(
+        hint_text="Search for a place", 
+        hint_style=ft.TextStyle(font_family="Trasandina", size=18),
+        width=350, 
+        height=50,
+        border_color=ft.colors.GREY_300,
+        border_radius=ft.border_radius.all(10),
+        on_change=lambda e: update_content_based_on_filters(e.control.value)
+    )
 
     return ft.View(
         route="/study_places", 
