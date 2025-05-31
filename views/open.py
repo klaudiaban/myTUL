@@ -1,17 +1,13 @@
 import flet as ft
 from constants import *
+from assets.info.faculties_data import faculties
+from .faculty_storage import save_selected_faculty, load_selected_faculty
 
 def open_view(page: ft.Page) -> ft.View:
-    faculties = ["BAIS",
-                 "BINOZ",
-                 "Chemistry",
-                 "FTIMS",
-                 "IFE",
-                 "Mechanical Engineering",
-                 "WEEIA",
-                 "WIPOS",
-                 "WOIZ",
-                 "WTMiWT"]
+    selected = load_selected_faculty()
+    if selected:
+        page.go("/home")
+        return ft.View(route="/open", controls=[])
 
     text = ft.Text(
         "Choose your faculty",
@@ -22,9 +18,7 @@ def open_view(page: ft.Page) -> ft.View:
         text_align="center"
     )
 
-    dropdown_options = []
-    for faculty in faculties:
-        dropdown_options.append(ft.dropdown.Option(faculty))
+    dropdown_options = [ft.dropdown.Option(faculty) for faculty in faculties.keys()]
 
     dropdown = ft.Dropdown(
         label="Faculty",
@@ -33,6 +27,11 @@ def open_view(page: ft.Page) -> ft.View:
         options=dropdown_options,
         width=300
     )
+
+    def submit_click(e):
+        if dropdown.value:
+            save_selected_faculty(dropdown.value)
+            page.go("/home")
 
     button = ft.ElevatedButton(
         text="Submit",
@@ -44,7 +43,7 @@ def open_view(page: ft.Page) -> ft.View:
             shape=ft.RoundedRectangleBorder(radius=12),
             elevation={"pressed": 4, "hovered": 2}
         ),
-        on_click=lambda e: page.go("/home")
+        on_click=submit_click
     )
 
     return ft.View(
