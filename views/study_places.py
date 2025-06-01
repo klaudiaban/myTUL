@@ -20,9 +20,9 @@ def study_places_view(page: ft.Page) -> ft.View:
         for facility in facilities:
             facility_chips.append(
                 ft.Chip(
-                    label=ft.Text(facility, size=12),
-                    bgcolor=ft.colors.BLUE_50,
-                    border_side=ft.BorderSide(color=ft.colors.BLUE_200, width=1)
+                    label=ft.Text(facility, size=14, font_family="Trasandina", color=ft.colors.BLACK),
+                    bgcolor=ft.colors.WHITE,
+                    border_side=ft.BorderSide(color=ft.colors.INDIGO_200, width=1),
                 )
             )
 
@@ -47,10 +47,10 @@ def study_places_view(page: ft.Page) -> ft.View:
                         height=30,
                         alignment=ft.MainAxisAlignment.SPACE_BETWEEN,
                         controls=[
-                            ft.Text(name, size=20, weight=ft.FontWeight.BOLD),
+                            ft.Text(name, size=22, weight=ft.FontWeight.BOLD, font_family="Trasandina"),
                         ]
                     ),
-                    ft.Text(building, size=16, color=ft.colors.GREY),
+                    ft.Text(building, size=16, color=ft.colors.GREY_700, font_family="Trasandina"),
                     ft.Container(
                         content=ft.Row(
                             controls=facility_chips,
@@ -66,12 +66,14 @@ def study_places_view(page: ft.Page) -> ft.View:
                         controls=[
                             ft.Text(
                                 availability,
-                                size=14,
+                                size=16,
                                 color=availability_color,
-                                weight=ft.FontWeight.BOLD
+                                weight=ft.FontWeight.BOLD,
+                                font_family="Trasandina"
                             ),
                             ft.ElevatedButton(
                                 text="More Info",
+                                color=ft.colors.INDIGO_500,
                                 on_click=on_more_info,
                                 style=ft.ButtonStyle(shape=ft.RoundedRectangleBorder(radius=8))
                             )
@@ -198,12 +200,13 @@ def study_places_view(page: ft.Page) -> ft.View:
 
     search_field = ft.TextField(
         hint_text="Search for a place", 
-        hint_style=ft.TextStyle(font_family="Trasandina", size=18),
+        hint_style=ft.TextStyle(font_family="Trasandina", size=18, color=ft.colors.GREY_700),
         width=350, 
         height=50,
         border_color=ft.colors.GREY_300,
         border_radius=ft.border_radius.all(10),
-        on_change=lambda e: update_content_based_on_filters(e.control.value)
+        on_change=lambda e: update_content_based_on_filters(e.control.value),
+        text_style=ft.TextStyle(font_family="Trasandina", size=18, color=ft.colors.GREY_700),
     )
 
     return ft.View(
