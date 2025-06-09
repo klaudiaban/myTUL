@@ -131,7 +131,7 @@ def study_places_view(page: ft.Page) -> ft.View:
         filtered = []
 
         for place in places_data:
-            matches_amenity = "All" in selected_amenities or any(
+            matches_amenity = "All" in selected_amenities or all(
                 amenity in place['facilities'] for amenity in selected_amenities
             )
             matches_search = search_text in place['name'].lower()
