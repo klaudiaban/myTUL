@@ -1,7 +1,7 @@
 import flet as ft
 from constants import *
 from assets.info.faculties_data import faculties
-from .faculty_storage import save_selected_faculty, load_selected_faculty
+from .helpers.faculty_storage import save_selected_faculty, load_selected_faculty
 
 def open_view(page: ft.Page) -> ft.View:
     selected = load_selected_faculty()

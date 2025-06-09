@@ -4,6 +4,9 @@ from views.calendar import calen_view
 from views.study_places import study_places_view
 from views.wikamp import wikamp_view
 from views.open import open_view
+from views.news import news_view
+from views.more_info import study_place_details_view
+from urllib.parse import unquote
 
 def initialize_page(page: ft.Page):
     
@@ -35,6 +38,12 @@ def initialize_page(page: ft.Page):
             page.views.append(study_places_view(page))
         elif page.route == "/wikamp":
             page.views.append(wikamp_view(page))
+        elif page.route == "/news":
+            page.views.append(news_view(page))
+        elif page.route.startswith("/study_places_details/"):
+            # Extract place name from the route
+            place_name = page.route.split("/study_places_details/")[1]
+            page.views.append(study_place_details_view(page, place_name))
         else:
             page.views.append(ft.View("/", [ft.Text("404 - Page not found")]))
 

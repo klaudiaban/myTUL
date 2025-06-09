@@ -3,7 +3,7 @@ import webbrowser
 from constants import *
 from .helpers.appbar import create_appbar
 
-def wikamp_view(page: ft.Page) -> ft.View:
+def news_view(page: ft.Page) -> ft.View:
     appbar = create_appbar(page, route_back="/home", home=False)
 
     webbrowser.open("https://edu.p.lodz.pl/")
@@ -17,7 +17,7 @@ def wikamp_view(page: ft.Page) -> ft.View:
     content = ft.Row(controls=[fallback_message], alignment=ft.MainAxisAlignment.CENTER)
 
     return ft.View(
-        route="/wikamp",
+        route="/news",
         appbar=appbar,
         controls=[content],
         scroll=ft.ScrollMode.AUTO,
