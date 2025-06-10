@@ -3,10 +3,67 @@ import pandas as pd
 from constants import *
 from .helpers.appbar import create_appbar
 from .helpers.helpers_study_places import FACILITY_COLUMNS, check_facilities, create_study_place_card
+from geopy.distance import geodesic
+from geopy.geocoders import Nominatim
 
 def study_places_view(page: ft.Page) -> ft.View:
+    gl = ft.Geolocator(
+        location_settings=ft.GeolocatorSettings(
+            accuracy=ft.GeolocatorPositionAccuracy.HIGH
+        ),
+    )
+
+    page.overlay.append(gl)
+
+    sort_by_location_enabled = False
+
+    async def handle_get_current_position(e):
+        nonlocal sort_by_location_enabled
+        if not sort_by_location_enabled:
+            p = await gl.get_current_position_async()
+            location = (p.latitude, p.longitude)
+            print(f"get_current_position: {location}")
+
+            geolocator = Nominatim(user_agent="my_tracking_app_12345")
+            location_info = geolocator.reverse(location, language='pl')
+            print("Address:", location_info.address)
+
+            on_location_received(location)
+
+            sort_location_button.icon_color = TUL_DARK_RED
+        else:
+            # Disable sorting if already enabled
+            sort_by_location_enabled = False
+            update_content_based_on_filters(search_field.value)
+            sort_location_button.icon_color = ft.colors.GREY_700
+
+        page.update()
+
     df = pd.read_csv("assets/info/study_places_table.csv")
     df = df.dropna(subset=["Name of the place", "Campus", "Building", "Name of image file"])
+
+    user_location = [None, None]
+
+    def sort_by_distance(user_location, places):
+        return sorted(
+            places,
+            key=lambda place: geodesic(
+                (user_location[0], user_location[1]),
+                (place['latitude'], place['longitude'])
+            ).meters
+        )
+        
+    def on_location_received(location):
+        nonlocal sort_by_location_enabled
+        user_location[0], user_location[1] = location
+        sort_by_location_enabled = True  # enable sorting by location
+        
+        # Filter and sort
+        filtered_places = filter_places_by_search_and_amenities(search_field.value, selected_amenities)
+        sorted_places = sort_by_distance(location, filtered_places)
+
+        content_column.controls = create_cards_from_data(sorted_places)
+        page.update()
 
     appbar = create_appbar(page, route_back="/home", home=False)
 
@@ -17,7 +74,9 @@ def study_places_view(page: ft.Page) -> ft.View:
             'image_path': row["Name of image file"],
             'name': row["Name of the place"],
             'building': row["Building"],
-            'facilities': facilities
+            'facilities': facilities,
+            'latitude': float(row["Latitude"]),
+            'longitude': float(row["Longitude"]),
         }
         places_data.append(place_data)
 
@@ -57,6 +116,10 @@ def study_places_view(page: ft.Page) -> ft.View:
 
     def update_content_based_on_filters(current_search_text):
         filtered_places = filter_places_by_search_and_amenities(current_search_text, selected_amenities)
+        
+        if sort_by_location_enabled and user_location[0] is not None:
+            filtered_places = sort_by_distance(user_location, filtered_places)
+        
         content_column.controls = create_cards_from_data(filtered_places)
         page.update()
 
@@ -109,12 +172,31 @@ def study_places_view(page: ft.Page) -> ft.View:
     search_field = ft.TextField(
         hint_text="Search for a place", 
         hint_style=ft.TextStyle(font_family="Trasandina", size=18, color=ft.colors.GREY_700),
-        width=350, 
-        height=50,
+        width=300, 
+        height=40,
+        dense=True,
         border_color=ft.colors.GREY_300,
         border_radius=ft.border_radius.all(10),
         on_change=lambda e: update_content_based_on_filters(e.control.value),
-        text_style=ft.TextStyle(font_family="Trasandina", size=18, color=ft.colors.GREY_700),
+        text_style=ft.TextStyle(font_family="Trasandina", size=18, color=ft.colors.GREY_700)
+    )
+
+    sort_location_button = ft.IconButton(
+        icon=ft.icons.MY_LOCATION,
+        icon_color=ft.colors.GREY_700, 
+        tooltip="Toggle sort by distance",
+        icon_size=28,
+        on_click=handle_get_current_position
+    )
+
+    search_row = ft.Row(
+        spacing=5,
+        alignment=ft.MainAxisAlignment.CENTER,
+        vertical_alignment=ft.CrossAxisAlignment.CENTER,
+        controls=[
+            search_field,
+            sort_location_button
+        ]
     )
 
     return ft.View(
@@ -125,7 +207,7 @@ def study_places_view(page: ft.Page) -> ft.View:
         scroll=ft.ScrollMode.AUTO, 
         controls=[
             ft.Column([
-                search_field,
+                search_row,
                 ft.Row(scroll=ft.ScrollMode.HIDDEN, controls=amenity_chips),
                 ft.Container(content=content_column)
             ], spacing=20, horizontal_alignment=ft.CrossAxisAlignment.CENTER)
