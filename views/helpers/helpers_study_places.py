@@ -4,7 +4,7 @@ import pandas as pd
 
 FACILITY_COLUMNS = [
     "Group", "Individual", "Cafeteria", "Power Outlets",
-    "Whiteboards", "Computers", "Comfortable chairs/Poufs/Couches"
+    "Whiteboards", "Computers", "Comfortable Chairs/Couches"
 ]
 
 def check_facilities(row):

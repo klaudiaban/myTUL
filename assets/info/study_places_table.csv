@@ -1,4 +1,4 @@
-Name of the place,Campus,Building,"Floor (0,1, 2, ...)",Name of image file,Latitude,Longitude,Group,Individual,Cafeteria,Power Outlets,Whiteboards,Computers,Comfortable chairs/Poufs/Couches
+Name of the place,Campus,Building,"Floor (0,1, 2, ...)",Name of image file,Latitude,Longitude,Group,Individual,Cafeteria,Power Outlets,Whiteboards,Computers,Comfortable Chairs/Couches
 stolikiB18,B18,Katedra Mikroelektroniki i Technik Informatycznych,0,B18parter.jpeg,51.746008,19.45644,0,1,1,0,0,0,0
 stolikiB18piętro,B18,Katedra Mikroelektroniki i Technik Informatycznych,1,B18piętro.jpeg,51.746252,19.455767,1,0,0,1,0,0,1
 strefa rosswoju,B17,Centrum Papiernictwa i Poligrafii Politechniki Łódzkiej,2,strefarosswoju.jpeg,51.745964,19.454862,1,0,0,1,1,0,1
