@@ -1,5 +1,3 @@
-from constants import gradient_background
-
 PAGE_CONFIG = {
     "width": 390,
     "height": 844,
@@ -7,7 +5,7 @@ PAGE_CONFIG = {
     "horizontal_alignment": 'center',
     "vertical_alignment": 'start',
     "padding": 20,
-    "bgcolor": gradient_background,
+    "bgcolor": "white",
     "scroll": 'auto',
     "theme_mode": 'light',
     "title": "myTUL",

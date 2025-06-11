@@ -2,7 +2,7 @@ import flet as ft
 import pandas as pd
 from constants import *
 from .helpers.appbar import create_appbar
-from .helpers.helpers_study_places import FACILITY_COLUMNS, check_facilities
+from .helpers.helpers_study_places import check_facilities
 
 def study_place_details_view(page: ft.Page, place_name: str) -> ft.View:
     df = pd.read_csv("assets/info/study_places_table.csv")

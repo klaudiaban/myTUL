@@ -1,5 +1,5 @@
 firebase_admin==6.9.0
 flet==0.28.3
 geopy==2.4.1
-pandas==2.3.0
+pandas==2.2.3
 Requests==2.32.4
