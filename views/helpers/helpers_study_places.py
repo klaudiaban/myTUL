@@ -1,4 +1,4 @@
-from flet import colors, Chip, Card, Container, Image, ImageFit, Text, Row, Column, ElevatedButton, BorderSide, RoundedRectangleBorder, ClipBehavior, padding, MainAxisAlignment, ButtonStyle, FontWeight
+from flet import Colors, Chip, Card, Container, Image, ImageFit, Text, Row, Column, ElevatedButton, BorderSide, RoundedRectangleBorder, ClipBehavior, padding, MainAxisAlignment, ButtonStyle, FontWeight
 from constants import *
 import pandas as pd
 
@@ -25,7 +25,7 @@ def check_facilities(row):
     return facilities
 
 def create_study_place_card(page, image_path, name, building, facilities, availability="Available"):
-    availability_color = colors.GREEN if availability == "Available" else colors.RED
+    availability_color = Colors.GREEN if availability == "Available" else Colors.RED
 
     on_more_info=lambda e: page.go(f"/study_places_details/{name}")
 
@@ -34,9 +34,9 @@ def create_study_place_card(page, image_path, name, building, facilities, availa
     for facility in facilities:
         facility_chips.append(
             Chip(
-                label=Text(facility, size=14, font_family="Trasandina", color=colors.BLACK),
-                bgcolor=colors.WHITE,
-                border_side=BorderSide(color=colors.INDIGO_200, width=1),
+                label=Text(facility, size=14, font_family="Trasandina", color=Colors.BLACK),
+                bgcolor=Colors.WHITE,
+                border_side=BorderSide(color=Colors.INDIGO_200, width=1),
             )
         )
 
@@ -46,7 +46,7 @@ def create_study_place_card(page, image_path, name, building, facilities, availa
     return Card(
         width=350,
         shape=RoundedRectangleBorder(radius=12),
-        shadow_color=colors.GREY_100,
+        shadow_color=Colors.GREY_100,
         content=Container(
             padding=10,
             border_radius=12,
@@ -64,7 +64,7 @@ def create_study_place_card(page, image_path, name, building, facilities, availa
                         Text(name, size=22, weight=FontWeight.BOLD, font_family="Trasandina"),
                     ]
                 ),
-                Text(building, size=16, color=colors.GREY_700, font_family="Trasandina"),
+                Text(building, size=16, color=Colors.GREY_700, font_family="Trasandina"),
                 Container(
                     content=Row(
                         controls=facility_chips,
@@ -87,7 +87,7 @@ def create_study_place_card(page, image_path, name, building, facilities, availa
                         ),
                         ElevatedButton(
                             text="More Info",
-                            color=colors.INDIGO_500,
+                            color=Colors.INDIGO_500,
                             on_click=on_more_info,
                             style=ButtonStyle(shape=RoundedRectangleBorder(radius=8))
                         )

@@ -1,4 +1,4 @@
-from flet import Page, View, Text, Image, ImageFit, Container, Column, Row, Chip, BorderSide, ClipBehavior, MainAxisAlignment, CrossAxisAlignment, padding, colors, FontWeight, ScrollMode
+from flet import Page, View, Text, Image, ImageFit, Container, Column, Row, Chip, BorderSide, ClipBehavior, MainAxisAlignment, CrossAxisAlignment, padding, Colors, FontWeight, ScrollMode
 import pandas as pd
 from constants import *
 from .helpers.appbar import create_appbar
@@ -18,9 +18,9 @@ def study_place_details_view(page: Page, place_name: str) -> View:
     # Create chips
     facility_chips = [
         Chip(
-            border_side=BorderSide(color=colors.GREY_300, width=1),
+            border_side=BorderSide(color=Colors.GREY_300, width=1),
             label=Text(fac, font_family="Trasandina", size=14, color=TUL_DARK_RED),
-            bgcolor=colors.WHITE,
+            bgcolor=Colors.WHITE,
         ) for fac in facilities
     ]
 
@@ -28,7 +28,7 @@ def study_place_details_view(page: Page, place_name: str) -> View:
         route=f"/study_places_details/{place_name}",
         appbar=create_appbar(page, route_back="/study_places", home=False),
         padding=10,
-        bgcolor=colors.WHITE,
+        bgcolor=Colors.WHITE,
         scroll=ScrollMode.AUTO,
         controls=[
             Column([
@@ -52,7 +52,7 @@ def study_place_details_view(page: Page, place_name: str) -> View:
                 Text(
                     value=f"Building: {row['Building']}",
                     size=18,
-                    color=colors.GREY_700,
+                    color=Colors.GREY_700,
                     font_family="Trasandina"
                 ),
                 Container(
@@ -69,7 +69,7 @@ def study_place_details_view(page: Page, place_name: str) -> View:
                     value=row.get("Description", "No description available."),
                     size=16,
                     font_family="Trasandina",
-                    color=colors.GREY_800
+                    color=Colors.GREY_800
                 )
             ],
             spacing=20,

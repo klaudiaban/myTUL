@@ -1,4 +1,4 @@
-from flet import Page, View, Text, TextStyle, dropdown, Dropdown, ElevatedButton, ButtonStyle, RoundedRectangleBorder, Container, Column, alignment, colors, BoxShadow, Offset, CrossAxisAlignment, MainAxisAlignment
+from flet import Page, View, Text, TextStyle, dropdown, Dropdown, ElevatedButton, ButtonStyle, RoundedRectangleBorder, Container, Column, alignment, Colors, BoxShadow, Offset, CrossAxisAlignment, MainAxisAlignment
 from constants import *
 from assets.info.faculties_data import faculties
 from .helpers.faculty_storage import save_selected_faculty, load_selected_faculty
@@ -49,7 +49,7 @@ def open_view(page: Page) -> View:
     return View(
         route="/open",
         padding=30,
-        bgcolor=colors.WHITE,
+        bgcolor=Colors.WHITE,
         horizontal_alignment=CrossAxisAlignment.CENTER,
         vertical_alignment=MainAxisAlignment.CENTER,
         controls=[
@@ -68,10 +68,10 @@ def open_view(page: Page) -> View:
                 alignment=alignment.center,
                 padding=30,
                 border_radius=20,
-                bgcolor=colors.WHITE,
+                bgcolor=Colors.WHITE,
                 shadow=BoxShadow(
                     blur_radius=10,
-                    color=colors.BLACK12,
+                    color=Colors.BLACK12,
                     offset=Offset(0, 4),
                 ),
                 width=350,

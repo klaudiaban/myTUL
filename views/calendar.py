@@ -1,6 +1,6 @@
 from datetime import datetime
 import calendar
-from flet import Page, View, Text, Column, MainAxisAlignment, CrossAxisAlignment, TextAlign, FontWeight, colors
+from flet import Page, View, Text, Column, MainAxisAlignment, CrossAxisAlignment, TextAlign, FontWeight, Colors
 from constants import *
 from .helpers.appbar import create_appbar
 
@@ -24,7 +24,7 @@ def calen_view(page: Page) -> View:
         "Calendar content goes here...",
         size=16,
         font_family="Trasandina",
-        color=colors.GREY
+        color=Colors.GREY
     )
 
     return View(

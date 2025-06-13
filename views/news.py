@@ -1,4 +1,4 @@
-from flet import Page, View, Text, Row, colors, MainAxisAlignment, ScrollMode
+from flet import Page, View, Text, Row, Colors, MainAxisAlignment, ScrollMode
 import webbrowser
 from constants import *
 from .helpers.appbar import create_appbar
@@ -12,7 +12,7 @@ def news_view(page: Page) -> View:
         "Wikamp has been opened in your default browser.",
         size=16,
         font_family="Trasandina",
-        color=colors.GREY,
+        color=Colors.GREY,
     )
     content = Row(controls=[fallback_message], alignment=MainAxisAlignment.CENTER)
 
@@ -22,5 +22,5 @@ def news_view(page: Page) -> View:
         controls=[content],
         scroll=ScrollMode.AUTO,
         padding=0,
-        bgcolor=colors.WHITE
+        bgcolor=Colors.WHITE
     )

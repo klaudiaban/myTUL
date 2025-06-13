@@ -1,4 +1,4 @@
-from flet import AppBar, PopupMenuButton, PopupMenuItem, Row, Text, IconButton, Image, colors, FontWeight, icons, ImageFit
+from flet import AppBar, PopupMenuButton, PopupMenuItem, Row, Text, IconButton, Image, Colors, FontWeight, Icons, ImageFit
 import os
 from constants import *
 
@@ -11,8 +11,8 @@ def create_appbar(page, route_back=None, home=True) -> AppBar:
         e.page.go("/open")
 
     settings_menu = PopupMenuButton(
-        icon=icons.SETTINGS,
-        icon_color=colors.GREY,
+        icon=Icons.SETTINGS,
+        icon_color=Colors.GREY,
         items=[
             PopupMenuItem(
                 content=Row([Text("Change faculty", font_family="Trasandina", size=16)]),
@@ -25,7 +25,7 @@ def create_appbar(page, route_back=None, home=True) -> AppBar:
             leading=Image(src="images/logo_PŁ.jpg", fit=ImageFit.CONTAIN),
             title=Text("myTUL", size=30, weight=FontWeight.BOLD, font_family="Trasandina"),
             center_title=True,
-            bgcolor=colors.WHITE,
+            bgcolor=Colors.WHITE,
             actions=[
                 settings_menu
             ]
@@ -33,13 +33,13 @@ def create_appbar(page, route_back=None, home=True) -> AppBar:
     else:
         appbar = AppBar(
             leading=IconButton(
-                icons.ARROW_BACK,
-                icon_color=colors.GREY,
+                Icons.ARROW_BACK,
+                icon_color=Colors.GREY,
                 on_click=lambda e: e.page.go(route_back)
             ),
             title=Text("myTUL", size=30, weight=FontWeight.BOLD, font_family="Trasandina"),
             center_title=True,
-            bgcolor=colors.WHITE,
+            bgcolor=Colors.WHITE,
             actions=[
                 settings_menu
             ]

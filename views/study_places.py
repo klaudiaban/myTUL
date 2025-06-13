@@ -1,4 +1,4 @@
-from flet import Page, View, Geolocator, GeolocatorSettings, GeolocatorPositionAccuracy, colors, Column, Text, TextField, IconButton, icons, Row, MainAxisAlignment, CrossAxisAlignment, Container, Chip, BorderSide, ScrollMode, border_radius, TextStyle
+from flet import Page, View, Geolocator, GeolocatorSettings, GeolocatorPositionAccuracy, Colors, Column, Text, TextField, IconButton, Icons, Row, MainAxisAlignment, CrossAxisAlignment, Container, Chip, BorderSide, ScrollMode, border_radius, TextStyle
 import pandas as pd
 from constants import *
 from .helpers.appbar import create_appbar
@@ -35,7 +35,7 @@ def study_places_view(page: Page) -> View:
             # Disable sorting if already enabled
             sort_by_location_enabled = False
             update_content_based_on_filters(search_field.value)
-            sort_location_button.icon_color = colors.GREY_700
+            sort_location_button.icon_color = Colors.GREY_700
 
         page.update()
 
@@ -160,10 +160,10 @@ def study_places_view(page: Page) -> View:
 
     for amenity in amenities:
         chip = Chip(
-            border_side=BorderSide(color=colors.GREY_300, width=1),
+            border_side=BorderSide(color=Colors.GREY_300, width=1),
             check_color=TUL_RED,
             label=Text(amenity, font_family="Trasandina", size=16, color=TUL_DARK_RED),
-            bgcolor=colors.WHITE,
+            bgcolor=Colors.WHITE,
             on_select=lambda e, amenity=amenity: amenity_selected(e, amenity),
             selected=(amenity == "All")
         )
@@ -171,19 +171,19 @@ def study_places_view(page: Page) -> View:
 
     search_field = TextField(
         hint_text="Search for a place", 
-        hint_style=TextStyle(font_family="Trasandina", size=18, color=colors.GREY_700),
+        hint_style=TextStyle(font_family="Trasandina", size=18, color=Colors.GREY_700),
         width=300, 
         height=40,
         dense=True,
-        border_color=colors.GREY_300,
+        border_color=Colors.GREY_300,
         border_radius=border_radius.all(10),
         on_change=lambda e: update_content_based_on_filters(e.control.value),
-        text_style=TextStyle(font_family="Trasandina", size=18, color=colors.GREY_700)
+        text_style=TextStyle(font_family="Trasandina", size=18, color=Colors.GREY_700)
     )
 
     sort_location_button = IconButton(
-        icon=icons.MY_LOCATION,
-        icon_color=colors.GREY_700, 
+        icon=Icons.MY_LOCATION,
+        icon_color=Colors.GREY_700, 
         tooltip="Toggle sort by distance",
         icon_size=28,
         on_click=handle_get_current_position
@@ -203,7 +203,7 @@ def study_places_view(page: Page) -> View:
         route="/study_places", 
         appbar=appbar,
         padding=10,
-        bgcolor=colors.WHITE, 
+        bgcolor=Colors.WHITE, 
         scroll=ScrollMode.AUTO, 
         controls=[
             Column([
