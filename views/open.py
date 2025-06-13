@@ -1,15 +1,15 @@
-import flet as ft
+from flet import Page, View, Text, TextStyle, dropdown, Dropdown, ElevatedButton, ButtonStyle, RoundedRectangleBorder, Container, Column, alignment, colors, BoxShadow, Offset, CrossAxisAlignment, MainAxisAlignment
 from constants import *
 from assets.info.faculties_data import faculties
 from .helpers.faculty_storage import save_selected_faculty, load_selected_faculty
 
-def open_view(page: ft.Page) -> ft.View:
+def open_view(page: Page) -> View:
     selected = load_selected_faculty()
     if selected:
         page.go("/home")
-        return ft.View(route="/open", controls=[])
+        return View(route="/open", controls=[])
 
-    text = ft.Text(
+    text = Text(
         "Choose your faculty",
         size=26,
         font_family="Trasandina",
@@ -18,61 +18,61 @@ def open_view(page: ft.Page) -> ft.View:
         text_align="center"
     )
 
-    dropdown_options = [ft.dropdown.Option(faculty) for faculty in faculties.keys()]
+    dropdown_options = [dropdown.Option(faculty) for faculty in faculties.keys()]
 
-    dropdown = ft.Dropdown(
-        label="Faculty",
-        text_size=16,
-        text_style=ft.TextStyle(font_family="Trasandina"),
-        options=dropdown_options,
-        width=300
-    )
+    faculty_dropdown = Dropdown(
+                        label="Faculty",
+                        text_size=16,
+                        text_style=TextStyle(font_family="Trasandina"),
+                        options=dropdown_options,
+                        width=300
+                    )
 
     def submit_click(e):
-        if dropdown.value:
-            save_selected_faculty(dropdown.value)
+        if faculty_dropdown.value:
+            save_selected_faculty(faculty_dropdown.value)
             page.go("/home")
 
-    button = ft.ElevatedButton(
+    button = ElevatedButton(
         text="Submit",
         bgcolor=TUL_RED,
         color=WHITE,
         width=200,
         height=50,
-        style=ft.ButtonStyle(
-            shape=ft.RoundedRectangleBorder(radius=12),
+        style=ButtonStyle(
+            shape=RoundedRectangleBorder(radius=12),
             elevation={"pressed": 4, "hovered": 2}
         ),
         on_click=submit_click
     )
 
-    return ft.View(
+    return View(
         route="/open",
         padding=30,
-        bgcolor=ft.colors.WHITE,
-        horizontal_alignment=ft.CrossAxisAlignment.CENTER,
-        vertical_alignment=ft.MainAxisAlignment.CENTER,
+        bgcolor=colors.WHITE,
+        horizontal_alignment=CrossAxisAlignment.CENTER,
+        vertical_alignment=MainAxisAlignment.CENTER,
         controls=[
-            ft.Container(
-                content=ft.Column(
+            Container(
+                content=Column(
                     [
                         text,
-                        ft.Container(height=20),
-                        dropdown,
-                        ft.Container(height=30),
+                        Container(height=20),
+                        faculty_dropdown,
+                        Container(height=30),
                         button,
                     ],
-                    alignment=ft.MainAxisAlignment.CENTER,
-                    horizontal_alignment=ft.CrossAxisAlignment.CENTER,
+                    alignment=MainAxisAlignment.CENTER,
+                    horizontal_alignment=CrossAxisAlignment.CENTER,
                 ),
-                alignment=ft.alignment.center,
+                alignment=alignment.center,
                 padding=30,
                 border_radius=20,
-                bgcolor=ft.colors.WHITE,
-                shadow=ft.BoxShadow(
+                bgcolor=colors.WHITE,
+                shadow=BoxShadow(
                     blur_radius=10,
-                    color=ft.colors.BLACK12,
-                    offset=ft.Offset(0, 4),
+                    color=colors.BLACK12,
+                    offset=Offset(0, 4),
                 ),
                 width=350,
             )

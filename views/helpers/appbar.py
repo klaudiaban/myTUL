@@ -1,8 +1,8 @@
-import flet as ft
+from flet import AppBar, PopupMenuButton, PopupMenuItem, Row, Text, IconButton, Image, colors, FontWeight, icons, ImageFit
 import os
 from constants import *
 
-def create_appbar(page, route_back=None, home=True) -> ft.AppBar:
+def create_appbar(page, route_back=None, home=True) -> AppBar:
 
     def change_faculty(e):
         file_path = os.path.join(os.path.dirname(__file__), "selected_faculty.txt")
@@ -10,36 +10,36 @@ def create_appbar(page, route_back=None, home=True) -> ft.AppBar:
             os.remove(file_path)
         e.page.go("/open")
 
-    settings_menu = ft.PopupMenuButton(
-        icon=ft.icons.SETTINGS,
-        icon_color=ft.colors.GREY,
+    settings_menu = PopupMenuButton(
+        icon=icons.SETTINGS,
+        icon_color=colors.GREY,
         items=[
-            ft.PopupMenuItem(
-                content=ft.Row([ft.Text("Change faculty", font_family="Trasandina", size=16)]),
+            PopupMenuItem(
+                content=Row([Text("Change faculty", font_family="Trasandina", size=16)]),
                 on_click=change_faculty)
         ]
     )
 
     if home:
-        appbar = ft.AppBar(
-            leading=ft.Image(src="images/logo_PŁ.jpg", fit=ft.ImageFit.CONTAIN),
-            title=ft.Text("myTUL", size=30, weight=ft.FontWeight.BOLD, font_family="Trasandina"),
+        appbar = AppBar(
+            leading=Image(src="images/logo_PŁ.jpg", fit=ImageFit.CONTAIN),
+            title=Text("myTUL", size=30, weight=FontWeight.BOLD, font_family="Trasandina"),
             center_title=True,
-            bgcolor=ft.colors.WHITE,
+            bgcolor=colors.WHITE,
             actions=[
                 settings_menu
             ]
         )
     else:
-        appbar = ft.AppBar(
-            leading=ft.IconButton(
-                ft.Icons.ARROW_BACK,
-                icon_color=ft.colors.GREY,
+        appbar = AppBar(
+            leading=IconButton(
+                icons.ARROW_BACK,
+                icon_color=colors.GREY,
                 on_click=lambda e: e.page.go(route_back)
             ),
-            title=ft.Text("myTUL", size=30, weight=ft.FontWeight.BOLD, font_family="Trasandina"),
+            title=Text("myTUL", size=30, weight=FontWeight.BOLD, font_family="Trasandina"),
             center_title=True,
-            bgcolor=ft.colors.WHITE,
+            bgcolor=colors.WHITE,
             actions=[
                 settings_menu
             ]

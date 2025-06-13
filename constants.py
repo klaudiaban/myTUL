@@ -1,5 +1,3 @@
-import flet as ft
-
 TUL_RED = "#7f170f"
 TUL_DARK_RED = "#5a110b"
 WHITE = '#ffffff'

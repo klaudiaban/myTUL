@@ -1,6 +1,6 @@
 from datetime import datetime
 import calendar
-from flet import *
+from flet import Page, View, Text, Column, MainAxisAlignment, CrossAxisAlignment, TextAlign, FontWeight, colors
 from constants import *
 from .helpers.appbar import create_appbar
 

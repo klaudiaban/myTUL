@@ -1,10 +1,10 @@
-import flet as ft
+from flet import app, Page
 from core.init import initialize_page
 
-def main(page: ft.Page):
+def main(page: Page):
     initialize_page(page)
 
 if __name__ == "__main__":
-    ft.app(target=main, assets_dir="assets")
+    app(target=main, assets_dir="assets")
 
 
