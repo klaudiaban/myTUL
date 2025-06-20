@@ -6,7 +6,7 @@ from views.wikamp import wikamp_view
 from views.open import open_view
 from views.news import news_view
 from views.more_info import study_place_details_view
-from urllib.parse import unquote
+from views.intro import intro_view
 
 def initialize_page(page: Page):
     
@@ -30,6 +30,8 @@ def initialize_page(page: Page):
 
         if page.route == "/open":
             page.views.append(open_view(page))
+        elif page.route == "/intro":
+            page.views.append(intro_view(page))
         elif page.route == "/home":
             page.views.append(home_view(page))
         elif page.route == "/calendar":

@@ -1,4 +1,4 @@
-from flet import Page, View, Text, Image, ImageFit, Container, Column, Row, Chip, BorderSide, ClipBehavior, MainAxisAlignment, CrossAxisAlignment, padding, Colors, FontWeight, ScrollMode
+from flet import Page, View, Text, Image, ImageFit, Container, Column, Row, Chip, BorderSide, ClipBehavior, MainAxisAlignment, CrossAxisAlignment, padding, Colors, FontWeight, ScrollMode, TextAlign
 import pandas as pd
 from constants import *
 from .helpers.appbar import create_appbar
@@ -18,16 +18,16 @@ def study_place_details_view(page: Page, place_name: str) -> View:
     # Create chips
     facility_chips = [
         Chip(
-            border_side=BorderSide(color=Colors.GREY_300, width=1),
-            label=Text(fac, font_family="Trasandina", size=14, color=TUL_DARK_RED),
+            label=Text(fac, size=16, font_family="Trasandina", color=Colors.BLACK),
             bgcolor=Colors.WHITE,
+            border_side=BorderSide(color=Colors.INDIGO_200, width=1),
         ) for fac in facilities
     ]
 
     return View(
         route=f"/study_places_details/{place_name}",
         appbar=create_appbar(page, route_back="/study_places", home=False),
-        padding=10,
+        padding=20,
         bgcolor=Colors.WHITE,
         scroll=ScrollMode.AUTO,
         controls=[
@@ -35,12 +35,12 @@ def study_place_details_view(page: Page, place_name: str) -> View:
                 Container(
                     content=Image(
                         src=f"assets/study_places_images/{image_path}",
-                        height=250,
-                        width=400,
-                        fit=ImageFit.COVER
+                        width=350,
+                        fit=ImageFit.COVER,
+                        border_radius=12,
                     ),
                     border_radius=12,
-                    clip_behavior=ClipBehavior.ANTI_ALIAS
+                    clip_behavior=ClipBehavior.ANTI_ALIAS,
                 ),
                 Text(
                     value=row["Name of the place"],
@@ -50,20 +50,21 @@ def study_place_details_view(page: Page, place_name: str) -> View:
                     color=TUL_DARK_RED
                 ),
                 Text(
-                    value=f"Building: {row['Building']}",
+                    value=row['Building'],
                     size=18,
                     color=Colors.GREY_700,
-                    font_family="Trasandina"
+                    font_family="Trasandina",
+                    text_align=TextAlign.CENTER
                 ),
                 Container(
                     content=Row(
                         controls=facility_chips,
                         wrap=True,
-                        spacing=6,
-                        run_spacing=6,
+                        spacing=5,
+                        run_spacing=5,
                         alignment=MainAxisAlignment.CENTER
                     ),
-                    padding=padding.symmetric(vertical=10)
+                    padding=padding.symmetric(vertical=5)
                 ),
                 Text(
                     value=row.get("Description", "No description available."),
@@ -72,7 +73,7 @@ def study_place_details_view(page: Page, place_name: str) -> View:
                     color=Colors.GREY_800
                 )
             ],
-            spacing=20,
+            spacing=10,
             horizontal_alignment=CrossAxisAlignment.CENTER)
         ],
         horizontal_alignment=CrossAxisAlignment.CENTER

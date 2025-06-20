@@ -15,15 +15,15 @@ def home_view(page: Page) -> View:
 
     # Item list
     items = [
-        ("About TUL", Icons.ACCOUNT_TREE, ""),
-        ("Campus Map", Icons.MAP, ""),
+        ("About TUL", Icons.ACCOUNT_TREE, "/about_tul"),
+        ("Campus Map", Icons.MAP, "/campus_map"),
         ("Calendar", Icons.CALENDAR_MONTH, '/calendar'),
-        ("News", Icons.NEWSPAPER, ""),
+        ("News", Icons.NEWSPAPER, "/news"),
         ("Wikamp", Icons.DASHBOARD, '/wikamp'),
-        ("WebDziekanat", Icons.PAGES, ""),
+        ("WebDziekanat", Icons.PAGES, "/webdziekant"),
         ("Study Places", Icons.BOOK, '/study_places'),
-        ("Website", Icons.WEB, ""),
-        ("E-mail", Icons.EMAIL, "")
+        ("Website", Icons.WEB, "/website"),
+        ("E-mail", Icons.EMAIL, "/email")
     ]
 
     def create_card(title, icon, url):

@@ -1,6 +1,6 @@
 from flet import Page, View, Text, TextStyle, dropdown, Dropdown, ElevatedButton, ButtonStyle, RoundedRectangleBorder, Container, Column, alignment, Colors, BoxShadow, Offset, CrossAxisAlignment, MainAxisAlignment
 from constants import *
-from assets.info.faculties_data import faculties
+from assets.info.faculties_data import FACULTIES_DATA
 from .helpers.faculty_storage import save_selected_faculty, load_selected_faculty
 
 def open_view(page: Page) -> View:
@@ -18,7 +18,7 @@ def open_view(page: Page) -> View:
         text_align="center"
     )
 
-    dropdown_options = [dropdown.Option(faculty) for faculty in faculties.keys()]
+    dropdown_options = [dropdown.Option(faculty) for faculty in FACULTIES_DATA.keys()]
 
     faculty_dropdown = Dropdown(
                         label="Faculty",

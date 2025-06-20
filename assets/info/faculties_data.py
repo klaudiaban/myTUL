@@ -1,4 +1,4 @@
-faculties = {
+FACULTIES_DATA = {
     "BAIS": {
         "website": "https://bais.p.lodz.pl/en",
         "news": "https://p.lodz.pl/en/about-tul/news"
