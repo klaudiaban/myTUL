@@ -5,6 +5,7 @@ from views.study_places import study_places_view
 from views.wikamp import wikamp_view
 from views.open import open_view
 from views.news import news_view
+from views.website import website_view
 from views.more_info import study_place_details_view
 from views.intro import intro_view
 
@@ -42,6 +43,8 @@ def initialize_page(page: Page):
             page.views.append(wikamp_view(page))
         elif page.route == "/news":
             page.views.append(news_view(page))
+        elif page.route == "/website":
+            page.views.append(website_view(page))
         elif page.route.startswith("/study_places_details/"):
             # Extract place name from the route
             place_name = page.route.split("/study_places_details/")[1]
