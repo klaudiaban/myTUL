@@ -10,6 +10,7 @@ from views.more_info import study_place_details_view
 from views.intro import intro_view
 from views.webdziekanat import webdziekanat_view
 from views.email import email_view
+from views.about_tul import about_tul_view
 
 def initialize_page(page: Page):
     
@@ -51,6 +52,8 @@ def initialize_page(page: Page):
             page.views.append(webdziekanat_view(page))
         elif page.route == "/email":
             page.views.append(email_view(page))
+        elif page.route == "/about_tul":
+            page.views.append(about_tul_view(page))
         elif page.route.startswith("/study_places_details/"):
             # Extract place name from the route
             place_name = page.route.split("/study_places_details/")[1]
