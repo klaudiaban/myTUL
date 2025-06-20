@@ -6,4 +6,3 @@ def main(page: Page):
 
 app(target=main, assets_dir="assets")
 
-
