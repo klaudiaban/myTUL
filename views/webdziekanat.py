@@ -2,20 +2,14 @@ from flet import Page, View, Text, Row, MainAxisAlignment, ScrollMode, Colors, T
 import webbrowser
 from constants import *
 from .helpers.appbar import create_appbar
-from .helpers.faculty_storage import load_selected_faculty
-from assets.info.faculties_data import FACULTIES_DATA
 
-def news_view(page: Page) -> View:
+def webdziekanat_view(page: Page) -> View:
     appbar = create_appbar(page, route_back="/home", home=False)
-
-    selected = load_selected_faculty()
-
-    news_url = FACULTIES_DATA.get(selected, {}).get("news")
     
-    webbrowser.open(news_url)
+    webbrowser.open("https://webdziekanat.p.lodz.pl/webdziekanat/glowna.html")
 
     fallback_message = Text(
-        "The news website has been opened in your default browser.",
+        "The WebDziekanat has been opened in your default browser.",
         size=16,
         font_family="Trasandina",
         color=Colors.GREY,
@@ -30,7 +24,7 @@ def news_view(page: Page) -> View:
     )
 
     return View(
-        route="/news",
+        route="/webdziekanat",
         appbar=appbar,
         controls=[content],
         scroll=ScrollMode.AUTO,

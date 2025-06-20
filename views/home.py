@@ -20,7 +20,7 @@ def home_view(page: Page) -> View:
         ("Calendar", Icons.CALENDAR_MONTH, '/calendar'),
         ("News", Icons.NEWSPAPER, "/news"),
         ("Wikamp", Icons.DASHBOARD, '/wikamp'),
-        ("WebDziekanat", Icons.PAGES, "/webdziekant"),
+        ("WebDziekanat", Icons.PAGES, "/webdziekanat"),
         ("Study Places", Icons.BOOK, '/study_places'),
         ("Website", Icons.WEB, "/website"),
         ("E-mail", Icons.EMAIL, "/email")
