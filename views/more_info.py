@@ -4,7 +4,7 @@ from flet.plotly_chart import PlotlyChart
 from constants import *
 from .helpers.appbar import create_appbar
 from .helpers.helpers_study_places import check_facilities
-from .helpers.plot_more_info import plot_slay
+from .helpers.plot_more_info import create_occupancy_card
 
 def study_place_details_view(page: Page, place_name: str) -> View:
     df = pd.read_csv("assets/info/study_places_table.csv")
@@ -25,7 +25,7 @@ def study_place_details_view(page: Page, place_name: str) -> View:
         ) for fac in facilities
     ]
 
-    ui, update_chart, initial_day = plot_slay()
+    occupancy_card, init_chart = create_occupancy_card()
 
     view = View(
         route=f"/study_places_details/{place_name}",
@@ -75,7 +75,7 @@ def study_place_details_view(page: Page, place_name: str) -> View:
                     font_family="Trasandina",
                     color=Colors.GREY_800
                 ),
-                ui
+                occupancy_card
             ],
             spacing=10,
             horizontal_alignment=CrossAxisAlignment.CENTER)
@@ -85,6 +85,6 @@ def study_place_details_view(page: Page, place_name: str) -> View:
 
     page.views.append(view)
     page.update()
-    update_chart(initial_day)
+    init_chart()
 
     return view

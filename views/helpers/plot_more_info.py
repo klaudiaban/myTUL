@@ -1,15 +1,16 @@
-from flet import (
-    Dropdown, DropdownOption, BarChart, BarChartGroup, BarChartRod,
-    ChartAxis, ChartAxisLabel, Text, Colors, Column, Container, padding, border_radius
-)
+import matplotlib
+matplotlib.use("Agg")
+
+import matplotlib.pyplot as plt
 import random
+import flet as ft
+from flet.matplotlib_chart import MatplotlibChart
 
 
 def get_weekly_data(two_hour_blocks=True):
     days = ['Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday', 'Sunday']
     full_hours = list(range(6, 21))  # 6 to 20 inclusive
 
-    # Use compact labels like "6–8" instead of "6:00 - 8:00"
     if two_hour_blocks:
         hour_blocks = [(f"{h}–{h+2}", h, h+2) for h in range(6, 20, 2)]
     else:
@@ -27,7 +28,7 @@ def get_weekly_data(two_hour_blocks=True):
 
         grouped = []
         for _, start, end in hour_blocks:
-            values = raw_values[start - 6:end - 6]  # align index to 0
+            values = raw_values[start - 6:end - 6]
             avg = sum(values) / len(values)
             grouped.append(round(avg, 1))
 
@@ -36,70 +37,71 @@ def get_weekly_data(two_hour_blocks=True):
     return data_by_day, [label for label, _, _ in hour_blocks], days
 
 
-def plot_slay():
-    data_by_day, hour_blocks, days = get_weekly_data(two_hour_blocks=True)
+def create_chart_figure(day, values, hour_labels):
+    fig, ax = plt.subplots(figsize=(6, 4), facecolor='white')
+    bars = ax.bar(hour_labels, values, color="#5C6BC0", edgecolor='black', linewidth=0.5)
+    ax.set_ylim(0, 18)
+    ax.set_title(f"Occupancy on {day}", fontsize=14, fontweight='bold')
+    ax.set_xlabel("Time Interval", fontsize=12)
+    ax.set_ylabel("Number of People", fontsize=12)
 
-    chart = BarChart(
-        left_axis=ChartAxis(
-            title=Text("Number of People", size=12),
-            labels_size=30,
-        ),
-        bottom_axis=ChartAxis(
-            title=Text("Time Interval", size=12),
-            labels=[
-                ChartAxisLabel(value=i, label=Text(hour_blocks[i], size=10))
-                for i in range(len(hour_blocks))
-            ],
-            labels_size=50,
-        ),
-        tooltip_bgcolor=Colors.with_opacity(0.9, Colors.INDIGO_200),
-        max_y=18,
-        interactive=True,
-        expand=True,
-    )
+    ax.spines['top'].set_visible(False)
+    ax.spines['right'].set_visible(False)
+    ax.grid(axis='y', linestyle='--', alpha=0.3)
+
+    for bar, val in zip(bars, values):
+        ax.text(bar.get_x() + bar.get_width()/2, val + 0.3, str(val), ha='center', va='bottom', fontsize=8)
+
+    fig.tight_layout()
+    return fig
+
+
+def create_occupancy_card():
+    data_by_day, hour_blocks, days = get_weekly_data()
+    default_day = "Monday"
+
+    chart_container = ft.Column()
 
     def update_chart(day):
-        chart.bar_groups = [
-            BarChartGroup(
-                x=i,
-                bar_rods=[
-                    BarChartRod(
-                        to_y=data_by_day[day][i],
-                        tooltip=f"{day} {hour_blocks[i]}: {data_by_day[day][i]} people",
-                        color=Colors.INDIGO_400,
-                        width=16  
-                    )
-                ]
-            )
-            for i in range(len(hour_blocks))
-        ]
-        chart.update()
+        fig = create_chart_figure(day, data_by_day[day], hour_blocks)
+        new_chart = MatplotlibChart(figure=fig)
+        chart_container.controls.clear()
+        chart_container.controls.append(new_chart)
+        chart_container.update()
 
-    dropdown = Dropdown(
+    dropdown = ft.Dropdown(
         label="Select day",
-        options=[DropdownOption(day) for day in days],
-        value="Monday",
+        options=[ft.dropdown.Option(day) for day in days],
+        value=default_day,
         width=220,
         border_radius=8,
-        text_size=14
+        filled=True,
+        bgcolor=ft.Colors.WHITE,
+        border_color=ft.Colors.INDIGO_200,
+        label_style=ft.TextStyle(font_family="Trasandina", size=14),
+        on_change=lambda e: update_chart(e.control.value)
     )
 
-    dropdown.on_change = lambda e: update_chart(dropdown.value)
-
-    content = Column([
-        Text("Occupancy in 2-hour intervals", size=20, weight="bold", color=Colors.BLACK87),
-        dropdown,
-        chart
-    ],
-        spacing=15,
-        horizontal_alignment="center"
+    card = ft.Card(
+        width=350,
+        shape=ft.RoundedRectangleBorder(radius=12),
+        shadow_color=ft.Colors.GREY_100,
+        content=ft.Container(
+            padding=10,
+            border_radius=12,
+            clip_behavior=ft.ClipBehavior.ANTI_ALIAS,
+            bgcolor=ft.Colors.WHITE,
+            content=ft.Column([
+                ft.Text("Occupancy", size=22, weight=ft.FontWeight.BOLD, font_family="Trasandina"),
+                dropdown,
+                chart_container
+            ],
+                spacing=12,
+                horizontal_alignment=ft.CrossAxisAlignment.CENTER
+            )
+        )
     )
 
-    ui = Container(
-        content=content,
-        bgcolor=Colors.GREY_100,
-        padding=padding.all(20),
-        border_radius=border_radius.all(12)
-    )
+    return card, lambda: update_chart(default_day)
 
-    return ui, update_chart, dropdown.value
+
