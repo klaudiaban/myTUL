@@ -3,7 +3,6 @@ import flet_video as fv
 import asyncio
 
 def intro_view(page: Page) -> View:
-    page.title = "TheEthicalVideo"
     page.window.always_on_top = True
 
     sample_media = [
@@ -11,8 +10,7 @@ def intro_view(page: Page) -> View:
     ]
 
     async def delayed_navigation():
-        await asyncio.sleep(3.5)
-        print("4 seconds passed. Navigating to home view...")
+        await asyncio.sleep(4)
         page.go("/open")
 
     def handle_video_loaded(e):
