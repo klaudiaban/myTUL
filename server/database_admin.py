@@ -50,7 +50,7 @@ current_data = {
 
 
 def insert_into_database(room, amount, date):
-    cursor.execute("INSERT INTO data (place, amount, date) VALUES (?, ?)", (room, amount, date))
+    cursor.execute("INSERT INTO data (place, amount, date) VALUES (?, ?, ?)", (room, amount, date))
     conn.commit()
 
 def set_realtime_data(current_data):
