@@ -1,8 +1,10 @@
 from flet import Page, View, Text, Image, ImageFit, Container, Column, Row, Chip, BorderSide, ClipBehavior, MainAxisAlignment, CrossAxisAlignment, padding, Colors, FontWeight, ScrollMode, TextAlign
 import pandas as pd
+from flet.plotly_chart import PlotlyChart
 from constants import *
 from .helpers.appbar import create_appbar
 from .helpers.helpers_study_places import check_facilities
+from .helpers.plot_more_info import plot_slay
 
 def study_place_details_view(page: Page, place_name: str) -> View:
     df = pd.read_csv("assets/info/study_places_table.csv")
@@ -10,7 +12,6 @@ def study_place_details_view(page: Page, place_name: str) -> View:
 
     facilities = check_facilities(row)
 
-    # Clean image file
     image_path = row["Name of image file"]
     if "HEIC" in image_path:
         image_path = image_path.replace("HEIC", "jpg")
@@ -24,7 +25,9 @@ def study_place_details_view(page: Page, place_name: str) -> View:
         ) for fac in facilities
     ]
 
-    return View(
+    ui, update_chart, initial_day = plot_slay()
+
+    view = View(
         route=f"/study_places_details/{place_name}",
         appbar=create_appbar(page, route_back="/study_places", home=False),
         padding=20,
@@ -71,10 +74,17 @@ def study_place_details_view(page: Page, place_name: str) -> View:
                     size=16,
                     font_family="Trasandina",
                     color=Colors.GREY_800
-                )
+                ),
+                ui
             ],
             spacing=10,
             horizontal_alignment=CrossAxisAlignment.CENTER)
         ],
         horizontal_alignment=CrossAxisAlignment.CENTER
     )
+
+    page.views.append(view)
+    page.update()
+    update_chart(initial_day)
+
+    return view
