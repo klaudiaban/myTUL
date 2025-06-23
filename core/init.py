@@ -64,4 +64,4 @@ def initialize_page(page: Page):
         page.update()
     
     page.on_route_change = route_change
-    page.go("/open")
+    page.go("/intro")
