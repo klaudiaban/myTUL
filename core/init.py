@@ -55,9 +55,11 @@ def initialize_page(page: Page):
         elif page.route == "/about_tul":
             page.views.append(about_tul_view(page))
         elif page.route.startswith("/study_places_details/"):
-            # Extract place name from the route
             place_name = page.route.split("/study_places_details/")[1]
-            page.views.append(study_place_details_view(page, place_name))
+            view, init_chart = study_place_details_view(page, place_name)
+            page.views.append(view)
+            page.update()
+            init_chart()
         else:
             page.views.append(View("/", [Text("404 - Page not found")]))
 
@@ -65,3 +67,4 @@ def initialize_page(page: Page):
     
     page.on_route_change = route_change
     page.go("/intro")
+

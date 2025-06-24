@@ -83,8 +83,4 @@ def study_place_details_view(page: Page, place_name: str) -> View:
         horizontal_alignment=CrossAxisAlignment.CENTER
     )
 
-    page.views.append(view)
-    page.update()
-    init_chart()
-
-    return view
+    return view, init_chart
