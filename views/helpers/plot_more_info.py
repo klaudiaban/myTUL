@@ -1,15 +1,18 @@
 import matplotlib
 matplotlib.use("Agg")
 
-import matplotlib.pyplot as plt
 import random
-import flet as ft
+from constants import *
+from flet import Colors, Column, Dropdown, dropdown, Text, Card, RoundedRectangleBorder, Container, ClipBehavior, TextStyle, FontWeight, CrossAxisAlignment
 from flet.matplotlib_chart import MatplotlibChart
-
+import matplotlib.pyplot as plt
+import matplotlib.font_manager as fm
+from matplotlib.patches import Rectangle, Ellipse
+from datetime import datetime
 
 def get_weekly_data(two_hour_blocks=True):
     days = ['Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday', 'Sunday']
-    full_hours = list(range(6, 21))  # 6 to 20 inclusive
+    full_hours = list(range(8, 21)) 
 
     if two_hour_blocks:
         hour_blocks = [(f"{h}–{h+2}", h, h+2) for h in range(6, 20, 2)]
@@ -36,72 +39,90 @@ def get_weekly_data(two_hour_blocks=True):
 
     return data_by_day, [label for label, _, _ in hour_blocks], days
 
+def create_chart_figure(day, values, hour_labels, current_hour=None):
+    font_path = "assets/fonts/Trasandina.otf"
 
-def create_chart_figure(day, values, hour_labels):
     fig, ax = plt.subplots(figsize=(6, 4), facecolor='white')
-    bars = ax.bar(hour_labels, values, color="#5C6BC0", edgecolor='black', linewidth=0.5)
-    ax.set_ylim(0, 18)
-    ax.set_title(f"Occupancy on {day}", fontsize=14, fontweight='bold')
-    ax.set_xlabel("Time Interval", fontsize=12)
-    ax.set_ylabel("Number of People", fontsize=12)
 
-    ax.spines['top'].set_visible(False)
-    ax.spines['right'].set_visible(False)
-    ax.grid(axis='y', linestyle='--', alpha=0.3)
+    colors = [TUL_RED if val > 12 else "#9EA5D4" for val in values]
 
-    for bar, val in zip(bars, values):
-        ax.text(bar.get_x() + bar.get_width()/2, val + 0.3, str(val), ha='center', va='bottom', fontsize=8)
+    for i, (label, val, color) in enumerate(zip(hour_labels, values, colors)):
+        # Shorten the rectangle height slightly to make room for the ellipse
+        ax.add_patch(Rectangle((i - 0.4, 0), 0.8, val - 0.2, color=color, edgecolor='black', linewidth=0.5))
+        
+        # Add a larger ellipse to make the top more rounded
+        ax.add_patch(Ellipse((i, val - 0.1), 0.8, 4, color=color, edgecolor='black', linewidth=0.5))
+
+
+        # Draw arrow if current hour is within this block
+        if current_hour is not None:
+            start_hour = int(label.split("–")[0])
+            end_hour = int(label.split("–")[1])
+            if start_hour <= current_hour < end_hour:
+                ax.annotate("↓", (i, val + 2), ha='center', va='bottom', fontsize=30)
+
+    ax.set_xlim(-0.5, len(hour_labels) - 0.5)
+    ax.set_ylim(0, 21)
+    ax.set_xticks(range(len(hour_labels)))
+    ax.set_xticklabels(hour_labels, fontproperties=fm.FontProperties(fname=font_path, size=17))
+
+    ax.set_yticks([])
+    ax.set_ylabel(None)
+    ax.set_xlabel(None)
+
+    for spine in ax.spines.values():
+        spine.set_visible(False)
+    ax.grid(False)
+
+    ax.set_title(f"Occupancy on {day}", fontproperties=fm.FontProperties(fname=font_path, size=25))
 
     fig.tight_layout()
     return fig
 
-
 def create_occupancy_card():
     data_by_day, hour_blocks, days = get_weekly_data()
-    default_day = "Monday"
+    now = datetime.now()
+    default_day = now.strftime("%A")
+    current_hour = now.hour
 
-    chart_container = ft.Column()
+    chart_container = Column()
 
     def update_chart(day):
-        fig = create_chart_figure(day, data_by_day[day], hour_blocks)
+        fig = create_chart_figure(day, data_by_day[day], hour_blocks, current_hour if day == default_day else None)
         new_chart = MatplotlibChart(figure=fig)
         chart_container.controls.clear()
         chart_container.controls.append(new_chart)
         chart_container.update()
 
-    dropdown = ft.Dropdown(
+    dropdown_options = [dropdown.Option(day) for day in days]
+
+    days_dropdown = Dropdown(
         label="Select day",
-        options=[ft.dropdown.Option(day) for day in days],
+        text_size=16,
+        options=dropdown_options,
         value=default_day,
         width=220,
-        border_radius=8,
-        filled=True,
-        bgcolor=ft.Colors.WHITE,
-        border_color=ft.Colors.INDIGO_200,
-        label_style=ft.TextStyle(font_family="Trasandina", size=14),
+        label_style=TextStyle(font_family="Trasandina"),
         on_change=lambda e: update_chart(e.control.value)
     )
 
-    card = ft.Card(
+    card = Card(
         width=350,
-        shape=ft.RoundedRectangleBorder(radius=12),
-        shadow_color=ft.Colors.GREY_100,
-        content=ft.Container(
+        shape=RoundedRectangleBorder(radius=12),
+        shadow_color=Colors.GREY_100,
+        content=Container(
             padding=10,
             border_radius=12,
-            clip_behavior=ft.ClipBehavior.ANTI_ALIAS,
-            bgcolor=ft.Colors.WHITE,
-            content=ft.Column([
-                ft.Text("Occupancy", size=22, weight=ft.FontWeight.BOLD, font_family="Trasandina"),
-                dropdown,
+            clip_behavior=ClipBehavior.ANTI_ALIAS,
+            bgcolor=Colors.WHITE,
+            content=Column([
+                days_dropdown,
                 chart_container
             ],
                 spacing=12,
-                horizontal_alignment=ft.CrossAxisAlignment.CENTER
+                horizontal_alignment=CrossAxisAlignment.CENTER
             )
         )
     )
 
     return card, lambda: update_chart(default_day)
-
-
