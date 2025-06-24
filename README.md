@@ -49,9 +49,9 @@ This project was created by Diginauts as part of the *Team Project* course at th
 ## 📸 Screenshots
 
 <p align="center">
-  <img src="docs/screenshots/faculty_selection.png" width="33%" alt="Faculty Selection Screenshot"/>
-  <img src="docs/screenshots/main_dashboard.png" width="33%" alt="Main Dashboard Screenshot"/>
-  <img src="docs/screenshots/study_places_view.png" width="33%" alt="Study Places Screenshot"/>
+  <img src="docs/screenshots/faculty_selection.png" width="30%" alt="Faculty Selection Screenshot"/>
+  <img src="docs/screenshots/main_dashboard.png" width="30%" alt="Main Dashboard Screenshot"/>
+  <img src="docs/screenshots/study_places_view.png" width="30%" alt="Study Places Screenshot"/>
 </p>
 
 ## 👥 Team
