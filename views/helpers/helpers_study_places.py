@@ -1,4 +1,4 @@
-from flet import Colors, Chip, Card, Container, Image, ImageFit, Text, Row, Column, ElevatedButton, BorderSide, RoundedRectangleBorder, ClipBehavior, padding, MainAxisAlignment, ButtonStyle, FontWeight
+from flet import Colors, Chip, Card, Container, Image, ImageFit, Text, Row, Column, ElevatedButton, BorderSide, RoundedRectangleBorder, ClipBehavior, padding, MainAxisAlignment, ButtonStyle, FontWeight, TextOverflow
 from constants import *
 import pandas as pd
 

@@ -50,7 +50,8 @@ def study_place_details_view(page: Page, place_name: str) -> View:
                     size=28,
                     weight=FontWeight.BOLD,
                     font_family="Trasandina",
-                    color=TUL_DARK_RED
+                    color=TUL_DARK_RED,
+                    text_align=TextAlign.CENTER
                 ),
                 Text(
                     value=row['Building'],
@@ -73,7 +74,8 @@ def study_place_details_view(page: Page, place_name: str) -> View:
                     value=row.get("Description", "No description available."),
                     size=16,
                     font_family="Trasandina",
-                    color=Colors.GREY_800
+                    color=Colors.GREY_800,
+                    text_align=TextAlign.CENTER
                 ),
                 occupancy_card
             ],
