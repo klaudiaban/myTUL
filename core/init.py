@@ -11,6 +11,7 @@ from views.intro import intro_view
 from views.webdziekanat import webdziekanat_view
 from views.email import email_view
 from views.about_tul import about_tul_view
+from views.campus_map import campus_map_view
 
 def initialize_page(page: Page):
     
@@ -54,6 +55,8 @@ def initialize_page(page: Page):
             page.views.append(email_view(page))
         elif page.route == "/about_tul":
             page.views.append(about_tul_view(page))
+        elif page.route == "/campus_map":
+            page.views.append(campus_map_view(page))
         elif page.route.startswith("/study_places_details/"):
             place_name = page.route.split("/study_places_details/")[1]
             view, init_chart = study_place_details_view(page, place_name)
