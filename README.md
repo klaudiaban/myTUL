@@ -82,7 +82,7 @@ User testing during PBL classes confirmed:
 
 **🎓 Developed with curiosity, collaboration, and a vision for a smarter campus.**
 
-### ℹ️ Sources
+## ℹ️ Sources
 
 - [Logo of Lodz University of Technology](https://uslugirozwojowe.parp.gov.pl/plik/podglad?token=%242a%2406%24SBQuYMAAvZBrooax26iqw.)
 - [Trasandina Font](https://fonts.adobe.com/fonts/trasandina)
