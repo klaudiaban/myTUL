@@ -37,11 +37,11 @@ This project was created by Diginauts as part of the *Team Project* course at th
 ## 🛠️ Tech Stack
 
 | Component              | Technology                         |
-|------------------------|-------------------------------------|
+|------------------------|------------------------------------|
 | Frontend UI            | Python + [Flet](https://flet.dev/) |
 | Computer Vision Model  | YOLO + ByteTrack                   |
 | Realtime DB            | Firebase Realtime Database         |
-| Backend Service        | Multithreaded Python server        |
+| Backend Service        | Python                             |
 | Local Storage          | SQL + CSV                          |
 | Version Control        | Git + GitHub                       |
 
@@ -75,11 +75,11 @@ User testing during PBL classes confirmed:
 - Integrate live university camera feeds
 - Full mobile and web compatibility
 - Real-time predictive occupancy graphs
-- Booking system or live chat assistant for space discovery
+- Booking system and AI recommendation system
 
 
 📖 Full report: See `docs/myTUL_report.pdf`
 
 ---
 
-🎓 Developed with curiosity, collaboration, and a vision for a smarter campus.
+**🎓 Developed with curiosity, collaboration, and a vision for a smarter campus.**
