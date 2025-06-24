@@ -13,6 +13,9 @@
 
 This project was created by Diginauts as part of the *Team Project* course at the International Faculty of Engineering, Lodz University of Technology.
 
+> 📖 **Full report:** See `docs/myTUL_report.pdf` \
+> 🖥️ **Final presentation:** See `docs/myTUL_presentation.pdf`
+
 ## 📱 Features
 
 ### 🌍 Study Places Module
@@ -75,15 +78,11 @@ User testing during PBL classes confirmed:
 - Real-time predictive occupancy graphs
 - Booking system and AI recommendation system
 
-📖 Full report: See `docs/myTUL_report.pdf`
-🖥️ Final presentation: See `docs/myTUL_presentation.pdf`
-
----
-
-**🎓 Developed with curiosity, collaboration, and a vision for a smarter campus.**
-
 ## ℹ️ Sources
 
 - [Logo of Lodz University of Technology](https://uslugirozwojowe.parp.gov.pl/plik/podglad?token=%242a%2406%24SBQuYMAAvZBrooax26iqw.)
 - [Trasandina Font](https://fonts.adobe.com/fonts/trasandina)
 - [Canva](https://www.canva.com/)
+
+---
+### **🎓 Developed with curiosity, collaboration, and a vision for a smarter campus.** ###
