@@ -1,8 +1,6 @@
 <p align="center">
-  <img src="docs/logo_app.jpg" alt="myTUL Logo" width="200"/>
+  <img src="docs/myTUL_slide.jpg" width="100%"/>
 </p>
-
-# myTUL – Your Digital Campus 🏫📱
 
 > A prototype application designed to help students at Lodz University of Technology find available study and rest spaces on campus using digital tools and AI-driven occupancy monitoring.
 
@@ -77,9 +75,15 @@ User testing during PBL classes confirmed:
 - Real-time predictive occupancy graphs
 - Booking system and AI recommendation system
 
-
 📖 Full report: See `docs/myTUL_report.pdf`
+🖥️ Final presentation: See `docs/myTUL_presentation.pdf`
 
 ---
 
 **🎓 Developed with curiosity, collaboration, and a vision for a smarter campus.**
+
+### ℹ️ Sources
+
+- [Logo of Lodz University of Technology](https://uslugirozwojowe.parp.gov.pl/plik/podglad?token=%242a%2406%24SBQuYMAAvZBrooax26iqw.)
+- [Trasandina Font](https://fonts.adobe.com/fonts/trasandina)
+- [Canva](https://www.canva.com/)
