@@ -6,12 +6,14 @@
 
 ## 🚀 Project Overview
 
-**myTUL** is a student-developed prototype addressing the lack of digital visibility into study and rest spaces across the TUL campus. It aims to:
-- Help students discover underutilized study and relaxation spots.
-- Present a unified platform for core academic tools.
-- Provide visual and real-time insights into room occupancy using computer vision.
+**myTUL** is a student-developed prototype created by the **Diginauts** team during the *Team Project* course at the International Faculty of Engineering, Lodz University of Technology. It addresses a key problem identified through interviews and research: **students have no reliable, digital way to view and compare available study and relaxation spaces on campus**.
 
-This project was created by Diginauts as part of the *Team Project* course at the International Faculty of Engineering, Lodz University of Technology.
+This lack of digital visibility results in overcrowding of popular spots, inefficient use of available space, and undermines the image of TUL as a modern, tech-savvy university.
+
+**myTUL** aims to:
+- Help students discover underutilized spaces across various buildings.
+- Offer an integrated dashboard for essential academic tools.
+- Use AI and computer vision to provide real-time room occupancy insights.
 
 > 📖 **Full report:** See `docs/myTUL_report.pdf` \
 > 🖥️ **Final presentation:** See `docs/myTUL_presentation.pdf`
@@ -32,7 +34,12 @@ This project was created by Diginauts as part of the *Team Project* course at th
 - (Planned) predictive crowd graphs to assist student decision-making
 
 ### 🔗 Unified Academic Dashboard (Prototype)
-- Quick access to key university services: Wikamp, Outlook, WebDziekanat, calendar
+- Quick access to key university services: 
+  - Wikamp
+  - Outlook
+  - WebDziekanat
+  - Campus Map
+  - TUL Website and News
 - Faculty-based content personalization
 
 ## 🛠️ Tech Stack
@@ -56,27 +63,44 @@ This project was created by Diginauts as part of the *Team Project* course at th
 
 ## 👥 Team
 
-- **Klaudia Banasiewicz** – Team lead, main app developer (Flet, Python)
-- **Marta Goltz** – UX/visual identity, data formatting, presentations
+- [**Klaudia Banasiewicz**](https://www.linkedin.com/in/klaudiabanasiewicz/) – Team lead, main app developer (Flet, Python) 
+- [**Marta Goltz**](https://www.linkedin.com/in/marta-goltz-66619b330/) – UX/visual identity, data formatting, presentations
 - **Yuriy Mosorov** – Computer vision model (YOLO + ByteTrack)
 - **Laura Vazquez** – Data collection, photo documentation
-- **Mieszko Strzelczyk** – Backend logic, database integration
-- **Anna Talar** – Content for Study Places module
+- [**Mieszko Strzelczyk**](https://www.linkedin.com/in/mieszko-strzelczyk-5a87a1356/) – Backend logic, database integration
+- [**Anna Talar**](https://www.linkedin.com/in/anna-talar-37139a228/) – Content for Study Places module
 
-Supervised by **Dr Daria Drwal**
+Supervised by [**Daria Drwal**](https://fizyka.p.lodz.pl/doktoranci/dariadrwal/)
 
 ## ✅ Verification
 
-User testing during PBL classes confirmed:
-- Students were unaware of many study spaces on campus
-- The prototype offers real value and strong potential for future implementation
+- Validated during user testing in PBL classes.
+- Most students didn’t know about many available study/rest areas.
+- The solution was rated as valuable, usable, and needed.
 
 ## 🔮 Future Directions
 
-- Integrate live university camera feeds
-- Full mobile and web compatibility
-- Real-time predictive occupancy graphs
-- Booking system and AI recommendation system
+- Live camera stream integration (with GDPR-compliant edge processing)
+- Predictive crowd graphs based on historical data
+- Mobile-first design & full browser support
+- Booking system & personalized AI-based space suggestions
+- Wi-Fi signal-based crowd sensing
+- Support for off-campus places like cafés and libraries
+
+## ⚖️ GDPR & Ethics
+
+- Only anonymous, numerical occupancy data is stored.
+- Real-time person detection runs on-device (edge computing), not in the cloud.
+- No facial recognition, video recording, or personal identification is used.
+- Transparency and informed consent are core to future deployment.
+
+## 🌐 Broader Applications
+
+The underlying technology is modular and reusable in:
+- Libraries
+- Cafés and co-working spaces
+- Events and conferences
+- Commercial locations like malls or airports
 
 ## ℹ️ Sources
 
