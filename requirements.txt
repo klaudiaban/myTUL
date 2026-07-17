@@ -1,5 +1,24 @@
-firebase_admin==6.9.0
+# Main app
 flet==0.28.3
-geopy==2.4.1
+flet-video==0.1.1
+
+# Data & plotting
 pandas==2.2.3
-Requests==2.32.4
+plotly>=5.20.0
+matplotlib>=3.9.0
+numpy>=1.26.0,<2.0.0
+
+# Location
+geopy==2.4.1
+
+# HTTP
+requests==2.32.4
+
+# Firebase
+firebase-admin==6.9.0
+
+# YOLO detection (Yuriy Mosorov)
+ultralytics>=8.2.0
+opencv-python>=4.10.0
+deep-sort-realtime>=1.3.2
+norfair>=2.2.0
